@@ -13,82 +13,79 @@
 </head>
 
 <body>
-        <nav class="green darken-2" role="navigation">
-                <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
-                  <ul class="right hide-on-med-and-down">
-                    <li><a href="#">Menú Principal</a></li>
-                    <li><a href="#">Wheels</a></li>
-                    <li><a href="#">Buses</a></li>
-                    <li><a href="#">Tren</a></li>
-                    <li><a href="#">Usuario</a></li>
-                  </ul>
-            
-                  <ul id="nav-mobile" class="sidenav">
-                      <li><a href="#">Menú Principal</a></li>
-                      <li><a href="#">Wheels</a></li>
-                      <li><a href="#">Buses</a></li>
-                      <li><a href="#">Tren</a></li>
-                      <li><a href="#">Usuario</a></li>
-                  </ul>
-                  <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  <nav class="green darken-2" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Menú Principal</a></li>
+        <li><a href="#">Wheels</a></li>
+        <li><a href="#">Buses</a></li>
+        <li><a href="#">Tren</a></li>
+        <li><a href="#">Usuario</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="sidenav">
+          <li><a href="#">Menú Principal</a></li>
+          <li><a href="#">Wheels</a></li>
+          <li><a href="#">Buses</a></li>
+          <li><a href="#">Tren</a></li>
+          <li><a href="#">Usuario</a></li>
+      </ul>
+    <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <section>
+    <div class="section container scrollspy" id="contact">
+      <div class="row">
+        <form class="col s12" action="#" method="post">
+          <div>
+            <br>
+            <h1 class="header center">Crear Nueva Bus</h1>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <h6>Placa del Bus</h>
+              <input id="PlacaBus" type="text" value="" class="validate">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <h6>Marca del Bus</h>
+              <input id="MarcaBus" type="text" value="" class="validate">
+            </div>
+          </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <h6>Cupos del Bus</h>
+                <input id="CuposBus" type="text" value="" class="validate">
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <h6>Ruta que recorrera el Bus</h>
+                <input id="RutaBus" type="text" value="" class="validate">
+              </div>
+            </div> 
+            <div class="row">
+              <div class="input-field col s12">
+                <h6>Nombre del Conductor del Bus</h>
+                <input id="NombreConductor" type="text" value="" class="validate">
+              </div>
+            </div>       
+          <div class="row">
+              <div class="row">
+                <div class="input-field col s13 ">
+                  <input type="submit" value="Crear" class="btn light-dark green ">
                 </div>
-              </nav>
-
-              <section>
-                    <div class="section container scrollspy" id="contact">
-                      <div class="row">
-                        <form class="col s12" action="#" method="post">
-                          <div>
-                            <br>
-                            <h1 class="header center">Crear Nueva Bus</h1>
-                
-                          </div>
-                          <div class="row">
-                              <div class="input-field col s12">
-                                <h6>Placa del Bus</h>
-                                <input id="PlacaBus" type="text" value="" class="validate">
-                              </div>
-                          </div>
-                          <div class="row">
-                                <div class="input-field col s12">
-                                  <h6>Marca del Bus</h>
-                                  <input id="MarcaBus" type="text" value="" class="validate">
-                                </div>
-                            </div>
-                            <div class="row">
-                                    <div class="input-field col s12">
-                                      <h6>Cupos del Bus</h>
-                                      <input id="CuposBus" type="text" value="" class="validate">
-                                    </div>
-                                </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                     <h6>Ruta que recorrera el Bus</h>
-                                    <input id="RutaBus" type="text" value="" class="validate">
-                                </div>
-                             </div> 
-                             <div class="row">
-                                    <div class="input-field col s12">
-                                         <h6>Nombre del Conductor del Bus</h>
-                                        <input id="NombreConductor" type="text" value="" class="validate">
-                                    </div>
-                                 </div>       
-                          <div class="row">
-                              <div class="row">
-                                <div class="input-field col s13 ">
-                                  <input type="submit" value="Crear" class="btn light-dark green ">
-                                </div>
-                                <div class="input-field col s13">
-                                  <a class="btn grey" id="cancelar" onclick="window.history.back();">Cancelar</a>
-                                </div>
-                              </div>
-                            </div>
-                        </form>
-                      </div>
-                  </section>    
-
-              
-                  
-    
+                <div class="input-field col s13">
+                  <a class="btn grey" id="cancelar" onclick="window.history.back();">Cancelar</a>
+                </div>
+              </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+  
 </body>
 </html>
