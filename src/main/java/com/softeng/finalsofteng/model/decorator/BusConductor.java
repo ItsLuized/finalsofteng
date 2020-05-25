@@ -5,7 +5,7 @@ public class BusConductor extends BusInfo {
     private String conductor;
     private String[] parametros;
 
-    public BusConductor(Bus busInfo, String conductor) {
+    public BusConductor(IBus busInfo, String conductor) {
         super(busInfo);
         this.conductor = conductor;
     }

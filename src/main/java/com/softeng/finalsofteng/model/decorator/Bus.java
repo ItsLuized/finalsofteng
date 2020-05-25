@@ -1,8 +1,50 @@
 package com.softeng.finalsofteng.model.decorator;
 
-public interface Bus {
+public class Bus implements IBus {
 
-    String getTodo();
+    private String placa;
+    private int capacidad;
+    private String marca;
 
-    void setTodo(String placa, int capacidad, String marca);
+    public Bus(String placa, int capacidad, String marca) {
+        this.placa = placa;
+        this.capacidad = capacidad;
+        this.marca = marca;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    @Override
+    public String getTodo() {
+        return "Placa: " + placa + ",Capacidad: " + capacidad + ",Marca: " + marca;
+    }
+
+    @Override
+    public void setTodo(String placa, int capacidad, String marca) {
+        this.placa = placa;
+        this.capacidad = capacidad;
+        this.marca = marca;
+    }
 }

@@ -1,43 +1,60 @@
 package com.softeng.finalsofteng.controller;
 
+import com.softeng.finalsofteng.model.Zona;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
 
+@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class, WebMvcAutoConfiguration.class })
+@RestController
 public class Client {
-    private Proxy proxy;
-    private Facade facade;
+    private Proxy proxy = Proxy.getInstance();
+    private Facade facade = Facade.getInstance();
     private Encryption encryption;
 
-    public Client() {
-        this.proxy = Proxy.getInstance();
-        this.facade = Facade.getInstance();
+
+    @GetMapping("/")
+    public ResponseEntity<?> home() {
+        return new ResponseEntity<>("Sirve", HttpStatus.OK);
     }
 
-    public static void main(String[] args) {
-        new Client();
+    @PostMapping(value = "/register")
+    public ResponseEntity<String> registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
+        this.proxy.registerUser(email, password, direccion, documento, telefono, zona);
+        return new ResponseEntity<>("200",
+                HttpStatus.OK);
     }
 
-    public String registerUser(String email, String password) {
-        this.proxy.registerUser(email, password);
-        return "Usuario registrado";
-    }
-
-    public BigInteger accederSistema(String email, String password, String IP) throws Exception {
+    @PostMapping(value = "/login")
+    public ResponseEntity<?> accederSistema(String email, String password, String IP) throws Exception {
         BigInteger nonce = this.proxy.accederSistema(email, password, IP);
         this.encryption = Encryption.getInstance(nonce.toString());
-        return nonce;
+        return new ResponseEntity<>(nonce, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/noexiste")
     public Object elaborarOperacion(String mesgNotEncrypted, String ip) throws Exception {
         return this.facade.elaborarOperacion(this.encryption.encrypt(mesgNotEncrypted), ip);
     }
 
-    public String getZonas() {
-        return this.proxy.getZonasString();
+    @GetMapping(value = "/zonas")
+    public ResponseEntity<?> getZonas() {
+        return new ResponseEntity<>(this.proxy.getZonasString(), HttpStatus.OK);
     }
 
-    public boolean existeZona(String zona) {
-        return this.proxy.existeZona(zona);
+    @GetMapping(value = "/existezona")
+    public ResponseEntity<?> existeZona(String nombreLugar) {
+        if (this.proxy.existeZona(nombreLugar) == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else return new ResponseEntity<>(HttpStatus.FOUND);
     }
 
 }

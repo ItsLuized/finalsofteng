@@ -1,10 +1,10 @@
 package com.softeng.finalsofteng.model.decorator;
 
-abstract class BusInfo implements Bus {
+abstract class BusInfo implements IBus {
 
-    protected Bus busInfo;
+    protected IBus busInfo;
 
-    public BusInfo(Bus busInfo) {
+    public BusInfo(IBus busInfo) {
         this.busInfo = busInfo;
     }
 

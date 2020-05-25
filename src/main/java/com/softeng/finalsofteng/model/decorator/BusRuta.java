@@ -4,7 +4,7 @@ public class BusRuta extends BusInfo {
 
     private String ruta;
 
-    public BusRuta(Bus busInfo, String ruta) {
+    public BusRuta(IBus busInfo, String ruta) {
         super(busInfo);
         this.ruta = ruta;
     }

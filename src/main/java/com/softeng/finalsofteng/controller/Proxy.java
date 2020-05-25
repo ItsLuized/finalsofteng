@@ -1,21 +1,29 @@
 package com.softeng.finalsofteng.controller;
 
+import com.softeng.finalsofteng.model.ILogin;
 import com.softeng.finalsofteng.model.SystemRemoteException;
 import com.softeng.finalsofteng.model.User;
-import com.softeng.finalsofteng.model.composite.Zona;
+import com.softeng.finalsofteng.model.Zona;
+import com.softeng.finalsofteng.repository.IUserRepository;
+import com.softeng.finalsofteng.repository.IZonaRespository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Proxy {
+public class Proxy implements ILogin {
     private static Proxy instance = null;
     private final Map<String, User> users;
     private final Map<String, BigInteger> ipNonce;
     private final Facade facade;
     private final Map<String, Zona> zonas;
     private BigInteger nonce;
+    @Autowired
+    private IUserRepository userRepository;
+    @Autowired
+    private IZonaRespository zonaRespository;
 
     private Proxy() {
         this.users = new HashMap();
@@ -32,9 +40,8 @@ public class Proxy {
         return instance;
     }
 
-    public void registerUser(String email, String password) {
-        if (!this.users.containsKey(email))
-            this.users.put(email, new User(email, password));
+    public void registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
+        this.facade.registerUser(email, password, direccion, documento, telefono, zona);
     }
 
     /*public void registerUser(String email, String password, String nombre, String direccion, String telefono, String ciudad) {
@@ -47,10 +54,9 @@ public class Proxy {
     }*/
 
     public BigInteger accederSistema(String email, String password, String ip) throws Exception {
-        User user = new User(email, password);
-        if (!this.users.containsKey(user.getEmail())) throw new SystemRemoteException("User not registered");
-        User userDB = this.users.get(user.getEmail());
-        if (!userDB.getPassword().equals(user.getPassword())) throw new SystemRemoteException("Invalid credentials");
+        User user = userRepository.findByEmail(email);
+        if (user == null) throw new SystemRemoteException("User not registered");
+        if (user.getPassword() != password) throw new SystemRemoteException("Invalid credentials");
 
         this.nonce = BigInteger.probablePrime(2048, new SecureRandom());
         this.facade.registrarSesion(ip, user);
@@ -63,27 +69,18 @@ public class Proxy {
     }
 
     public String getZonasString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Map.Entry<String, Zona> entry : this.getZonas().entrySet()) {
-            stringBuilder.append(entry.getKey() + "\n");
-        }
-        return stringBuilder.toString();
+        return this.facade.getZonasString();
     }
 
-    public boolean existeZona(String zona) {
-        boolean existe = false;
-        if (this.zonas.containsKey(zona)) {
-            existe = true;
-        }
-        return existe;
+    public Zona existeZona(String nombreLugar) {
+        return facade.existeZona(nombreLugar);
     }
 
-    public boolean crearContenedor(String ciudad){
-        Zona zona = new Zona();
-        zona.lugar(ciudad);
-        this.zonas.put(ciudad, zona);
-        return this.zonas.containsKey(ciudad);
+
+    public void crearContenedor(String nombreLugar, Zona zonaPadre){
+        this.facade.crearContenedor(nombreLugar, zonaPadre);
     }
+
 
     public BigInteger getNonce() {
         return nonce;
@@ -93,19 +90,19 @@ public class Proxy {
         return this.ipNonce.get(ip);
     }
 
-    public String agregarUsuarioAZona(String ciudad, String documento){
-        String emailUsuario = "";
+    /*
+    public String agregarUsuarioAZona(String nombreLugar, String documento){
         String retorno = "fallo";
-        for(User user : this.users.values()){
-            if (user.getDocumento().equals(documento))
-                emailUsuario = user.getEmail();
-        }
-        if (!emailUsuario.equals("")){
+        User user = userRepository.findByDocumento(documento);
+        if (user == null){
             retorno = "void";
         }
-        this.zonas.get(ciudad).add(this.users.get(emailUsuario));
+        Zona zona = zonaRespository.findByNombreLugar(nombreLugar);
+        user.setZona(zona);
+        userRepository.save(user);
         return retorno;
     }
+    */
 
     public void remplazarUsuario(User oldUser, User newUser){
         this.users.remove(oldUser.getEmail());

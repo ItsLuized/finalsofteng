@@ -1,5 +1,9 @@
-package com.softeng.finalsofteng.controller;
+package com.softeng.finalsofteng;
 
+import com.softeng.finalsofteng.controller.Encryption;
+import com.softeng.finalsofteng.controller.Facade;
+import com.softeng.finalsofteng.controller.Proxy;
+import com.softeng.finalsofteng.model.Zona;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -16,7 +20,7 @@ public class PruebasIntegracionySistema {
     @BeforeClass
     public static void setup() {
         Proxy proxy = Proxy.getInstance();
-        proxy.registerUser("juangarru@unisabana.edu.co", "123456789");
+        proxy.registerUser("juangarru@unisabana.edu.co", "123456789", "Av. Chilacos, #1-50", "483407", "3202829564", null);
     }
 
     /**
@@ -181,7 +185,7 @@ public class PruebasIntegracionySistema {
             Proxy proxy = Proxy.getInstance();
 
             // Crear el contenedor Chia
-            proxy.crearContenedor("Chia");
+            proxy.crearContenedor("Chia", null);
             BigInteger primo = proxy.accederSistema("juangarru@unisabana.edu.co", "123456789", "20.4.3.1");
 
             //CREAR USUARIO
@@ -241,7 +245,7 @@ public class PruebasIntegracionySistema {
             BigInteger primo = proxy.accederSistema("juangarru@unisabana.edu.co", "123456789", "20.4.3.1");
 
             //CREAR USUARIO, CONTENEDOR Y METERLO A CONTENEDOR
-            proxy.crearContenedor("Chia");
+            proxy.crearContenedor("Chia", null);
             //CREAR USUARIO
             String mensajeAencriptar1 = "crearUsuario,5,String,juangarru@unisabana.edu.co,String,123456789,String,calle 70 No. 50-14 Casa 1,String,100912921,String,3017641234,void";
 
