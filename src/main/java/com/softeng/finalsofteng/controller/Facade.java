@@ -1,15 +1,9 @@
 package com.softeng.finalsofteng.controller;
 
-import com.softeng.finalsofteng.model.ILogin;
-import com.softeng.finalsofteng.model.SystemRemoteException;
-import com.softeng.finalsofteng.model.User;
-import com.softeng.finalsofteng.model.Zona;
-import com.softeng.finalsofteng.model.decorator.IBus;
-import com.softeng.finalsofteng.model.decorator.BusConductor;
-import com.softeng.finalsofteng.model.decorator.BusRuta;
-import com.softeng.finalsofteng.model.decorator.Bus;
+import com.softeng.finalsofteng.model.*;
 import com.softeng.finalsofteng.repository.IUserRepository;
-import com.softeng.finalsofteng.repository.IZonaRespository;
+import com.softeng.finalsofteng.repository.IZonaRepository;
+import com.softeng.finalsofteng.repository.IBusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Method;
@@ -23,11 +17,13 @@ public class Facade implements ILogin {
     private final Map<String, User> users; // Map consisting of ip and user
     //private Map<BigInteger, String> ipNonce;
     private Encryption encryption;
-    private final ArrayList<IBus> buses;
+    private final ArrayList<Bus> buses;
     @Autowired
     private IUserRepository userRepository;
     @Autowired
-    private IZonaRespository zonaRespository;
+    private IZonaRepository zonaRepository;
+    @Autowired
+    private IBusRepository busRepository;
 
     private Facade() {
         this.users = new HashMap<>();
@@ -82,21 +78,38 @@ public class Facade implements ILogin {
         return null;
     }
 
-    private void crearBus(String conductor, String ruta, String placa, int capacidad, String marca) {
-        IBus bus = new BusConductor(new BusRuta(new Bus(placa, capacidad, marca), ruta), conductor);
+    private void crearBus(Driver driver, String ruta, String placa, int capacidad, String marca) {
+        Route route = null;
+        switch (ruta.toLowerCase()){
+            case "septima":
+                route = Route.SEPTIMA;
+                break;
+            case "autonorte":
+                route = Route.AUTONORTE;
+                break;
+            case "boyaca":
+                route = Route.BOYACA;
+                break;
+            case "heroes":
+                route = Route.HEROES;
+                break;
+            case "novena":
+                route = Route.NOVENA;
+                break;
+        }
+
+        ruta = ruta.toUpperCase();
+        Bus bus = new Bus(placa, capacidad, marca, driver, route);
         this.buses.add(bus);
     }
 
     private String verRutas() {
-        StringBuilder res = new StringBuilder();
-        for (IBus bus : buses) {
-            res.append(bus.getTodo()).append("\n");
-        }
-        return res.toString();
+        List<Bus> buses = busRepository.findAll();
+        return  buses.toString();
     }
 
     private String buscarPersonaZona(String nombreLugar) {
-        Zona zona = zonaRespository.findByNombreLugar(nombreLugar);
+        Zona zona = zonaRepository.findByNombreLugar(nombreLugar);
         List<User> usersInZone = userRepository.findAllByZona(zona);
         return usersInZone.toString();
     }// Lo mismo que listarUsuarios()
@@ -105,10 +118,10 @@ public class Facade implements ILogin {
     public void crearContenedor(String nombreLugar, Zona zonaPadre){
         Zona zona = new Zona(nombreLugar);
         zona.setZonaPadre(zonaPadre);
-        zonaRespository.save(zona);
+        zonaRepository.save(zona);
         if (zonaPadre != null) {
             zonaPadre.add(zona);
-            zonaRespository.save(zonaPadre);
+            zonaRepository.save(zonaPadre);
         }
     }
 
@@ -149,26 +162,27 @@ public class Facade implements ILogin {
         if (user == null){
             retorno = "void";
         }
-        Zona zona = zonaRespository.findByNombreLugar(nombreLugar);
+        Zona zona = zonaRepository.findByNombreLugar(nombreLugar);
         user.setZona(zona);
         userRepository.save(user);
         return retorno;
     }
 
     private String listarUsuarios(String nombreLugar){
-        Zona zona = zonaRespository.findByNombreLugar(nombreLugar);
+        Zona zona = zonaRepository.findByNombreLugar(nombreLugar);
         List<User> usersInZone = userRepository.findAllByZona(zona);
         return usersInZone.toString();
     }
 
     @Override
     public void registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
-        userRepository.save(new User(email, password, direccion, documento, telefono, zona));
+        User user = new User(email, password, direccion, documento, telefono, zona);
+        userRepository.save(user);
     }
 
     public String getZonasString() {
 
-        List<Zona> zonas = zonaRespository.findAll();
+        List<Zona> zonas = zonaRepository.findAll();
 
         StringBuilder stringBuilder = new StringBuilder();
         for (Zona zona : zonas) {
@@ -178,7 +192,7 @@ public class Facade implements ILogin {
     }
 
     public Zona existeZona(String nombreLugar) {
-        return zonaRespository.findByNombreLugar(nombreLugar);
+        return zonaRepository.findByNombreLugar(nombreLugar);
 
     }
 }

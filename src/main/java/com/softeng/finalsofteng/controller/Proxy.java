@@ -5,7 +5,7 @@ import com.softeng.finalsofteng.model.SystemRemoteException;
 import com.softeng.finalsofteng.model.User;
 import com.softeng.finalsofteng.model.Zona;
 import com.softeng.finalsofteng.repository.IUserRepository;
-import com.softeng.finalsofteng.repository.IZonaRespository;
+import com.softeng.finalsofteng.repository.IZonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigInteger;
@@ -23,7 +23,7 @@ public class Proxy implements ILogin {
     @Autowired
     private IUserRepository userRepository;
     @Autowired
-    private IZonaRespository zonaRespository;
+    private IZonaRepository zonaRespository;
 
     private Proxy() {
         this.users = new HashMap();

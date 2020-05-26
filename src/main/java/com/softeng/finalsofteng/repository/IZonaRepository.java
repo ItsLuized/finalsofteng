@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface IZonaRespository extends JpaRepository<Zona, Long> {
+public interface IZonaRepository extends JpaRepository<Zona, Long> {
 
     Zona findByNombreLugar (String nombreLugar);
 
