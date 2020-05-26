@@ -53,7 +53,7 @@ public class PruebasIntegracionySistema {
 
             Proxy proxy = Proxy.getInstance();
 
-            BigInteger primo = proxy.accederSistema("admin@mail.com", "123456789", "20.4.3.1");
+            BigInteger primo = proxy.accederSistema("juangarru@unisabana.edu.co", "123456789", "20.4.3.1");
 
             //Protocolo nombre de método, cantidad de parámetros, tipo, valor,
 
