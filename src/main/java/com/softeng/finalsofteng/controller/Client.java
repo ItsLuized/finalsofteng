@@ -17,10 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -140,19 +137,28 @@ public class Client {
         List<Bus> ListadeBuses = busRepository.findAll();
         model.addAttribute("ListadeBuses", ListadeBuses);
         return "ListaBuses"; }
+     //CAMBIO NUEVO HECHO POR JUANSE PARA LISTAR BUSES (No probado jeje)
 
-     //CAMBIO NUEVO HECHO POR JUANSE PARA LISTAR BUSES
 
-    //CAMBIO NUEVO HECHO POR JUANSE Y NICKY PARA AGREGAR UN BUS
+    //Cambio para crar conductor NICKY Y JUANSE
+    @GetMapping("/conductor")
+    public String crearConductor(Model model){
+        Driver driver = new Driver();
+        model.addAttribute("driver", driver);
+        return "NewConductor"; } //Esto esta llamando al template NewConductor
+
+    @PostMapping("/conductor") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    public String saveConductor(@ModelAttribute("driver") Driver driver){
+        driverRepository.save(driver);
+        return "redirect:/";
+    }
+    //Cambio para crear conductor Nicky y Juanse
 
     @RequestMapping("/CrearBus")
     public String CrearUnBus(Model model){
 
         return "NewBus";
     }
-
-    
-    //CAMBIO NUEVO HECHO POR JUANSE Y NICKY PARA AGREGAR UN BUS
 
 
     @PostMapping("/bus/conductor")
