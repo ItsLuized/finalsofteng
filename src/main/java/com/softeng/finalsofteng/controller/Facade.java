@@ -4,18 +4,20 @@ import com.softeng.finalsofteng.model.*;
 import com.softeng.finalsofteng.repository.IUserRepository;
 import com.softeng.finalsofteng.repository.IZonaRepository;
 import com.softeng.finalsofteng.repository.IBusRepository;
+import com.softeng.finalsofteng.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Service
 public class Facade implements ILogin {
     private static Facade instance = null;
-    private final Map<String, User> users; // Map consisting of ip and user
+    //private final Map<String, User> users; // Map consisting of ip and user
     //private Map<BigInteger, String> ipNonce;
     private Encryption encryption;
     private final ArrayList<Bus> buses;
@@ -25,9 +27,12 @@ public class Facade implements ILogin {
     private IZonaRepository zonaRepository;
     @Autowired
     private IBusRepository busRepository;
+    @Autowired
+    private IUserService userService;
+
 
     private Facade() {
-        this.users = new HashMap<>();
+        //this.users = new HashMap<>();
         //this.ipNonce = new HashMap<>();
         this.buses = new ArrayList<>();
     }
@@ -40,7 +45,7 @@ public class Facade implements ILogin {
     }
 
     public void registrarSesion(String ip, User user) {
-        this.users.put(ip, user);
+        //this.users.put(ip, user);
     }
 
     private void crearBus(Driver driver, String ruta, String placa, int capacidad, String marca) {
@@ -142,8 +147,8 @@ public class Facade implements ILogin {
     @Override
     public void registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
         zonaRepository.save(zona);
-        User user = new User(email, password, direccion, documento, telefono, zona);
-        userRepository.save(user);
+        User user = new User(email, password, direccion, documento, telefono, zona, Role.USER);
+        userService.registerUser(user);
     }
 
     public String getZonasString() {

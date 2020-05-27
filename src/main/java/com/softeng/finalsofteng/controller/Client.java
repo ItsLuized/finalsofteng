@@ -1,7 +1,6 @@
 package com.softeng.finalsofteng.controller;
 
 import com.softeng.finalsofteng.model.Zona;
-import com.softeng.finalsofteng.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,6 @@ public class Client {
     //private final Facade facade = Facade.getInstance();
     private Encryption encryption;
 
-    @Autowired
-    private IUserService userService;
 
 
     @GetMapping("/")
@@ -36,14 +33,13 @@ public class Client {
                                                @RequestParam String telefono, @RequestParam String nombreLugar) {
         Zona zona = new Zona(nombreLugar);
         this.proxy.registerUser(email, password, direccion, documento, telefono, zona);
-        //userService.registerUser(email, password, direccion, documento, telefono, nombreLugar);
         return new ResponseEntity<>("200",
                 HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> accederSistema(String email, String password, String IP) throws Exception {
-        BigInteger nonce = this.proxy.accederSistema(email, password, IP);
+    public ResponseEntity<?> accederSistema(String email, String password) throws Exception {
+        BigInteger nonce = this.proxy.accederSistema(email, password);
         this.encryption = Encryption.getInstance(nonce.toString());
         return new ResponseEntity<>(nonce, HttpStatus.OK);
     }

@@ -32,13 +32,16 @@ public class User {
     @JoinColumn(name = "zona_id")
     private Zona zona;
 
-    public User(String email, String password, String direccion, String documento, String telefono, Zona zona) {
+    private Role role;
+
+    public User(String email, String password, String direccion, String documento, String telefono, Zona zona, Role role) {
         this.email = email;
         this.password = password;
         this.direccion = direccion;
         this.documento = documento;
         this.telefono = telefono;
         this.zona = zona;
+        this.role = role;
     }
 
     public User(String email, String password, String direccion, String documento, String telefono) {
@@ -47,6 +50,11 @@ public class User {
         this.direccion = direccion;
         this.documento = documento;
         this.telefono = telefono;
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     @Override

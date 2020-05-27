@@ -18,7 +18,7 @@ import java.util.Map;
 public class Proxy implements ILogin {
     private static Proxy instance = null;
     private final Map<String, User> users;
-    private final Map<String, BigInteger> ipNonce;
+    //private final Map<String, BigInteger> ipNonce;
     @Autowired
     private Facade facade;
     private final Map<String, Zona> zonas;
@@ -30,7 +30,7 @@ public class Proxy implements ILogin {
 
     private Proxy() {
         this.users = new HashMap();
-        this.ipNonce = new HashMap<>();
+        //this.ipNonce = new HashMap<>();
         this.zonas = new HashMap<>();
         this.nonce = new BigInteger("0");
     }
@@ -47,14 +47,14 @@ public class Proxy implements ILogin {
     }
 
 
-    public BigInteger accederSistema(String email, String password, String ip) throws Exception {
+    public BigInteger accederSistema(String email, String password) throws Exception {
         User user = userRepository.findByEmail(email);
         if (user == null) throw new SystemRemoteException("User not registered");
         if (user.getPassword() != password) throw new SystemRemoteException("Invalid credentials");
 
         this.nonce = BigInteger.probablePrime(2048, new SecureRandom());
-        this.facade.registrarSesion(ip, user);
-        this.ipNonce.put(ip, nonce);
+        //this.facade.registrarSesion(ip, user);
+        //this.ipNonce.put(ip, nonce);
         return nonce;
     }
 
@@ -80,9 +80,9 @@ public class Proxy implements ILogin {
         return nonce;
     }
 
-    public BigInteger getNonceByIP(String ip){
+    /*public BigInteger getNonceByIP(String ip){
         return this.ipNonce.get(ip);
-    }
+    }*/
 
     /*
     public String agregarUsuarioAZona(String nombreLugar, String documento){
