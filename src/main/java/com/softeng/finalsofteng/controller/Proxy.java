@@ -1,9 +1,6 @@
 package com.softeng.finalsofteng.controller;
 
-import com.softeng.finalsofteng.model.ILogin;
-import com.softeng.finalsofteng.model.SystemRemoteException;
-import com.softeng.finalsofteng.model.User;
-import com.softeng.finalsofteng.model.Zona;
+import com.softeng.finalsofteng.model.*;
 import com.softeng.finalsofteng.repository.IUserRepository;
 import com.softeng.finalsofteng.repository.IZonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +39,8 @@ public class Proxy implements ILogin {
         return instance;
     }
 
-    public void registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
-        this.facade.registerUser(email, password, direccion, documento, telefono, zona);
+    public User registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
+        return this.facade.registerUser(email, password, direccion, documento, telefono, zona);
     }
 
 
@@ -75,9 +72,8 @@ public class Proxy implements ILogin {
         this.facade.crearContenedor(nombreLugar, zonaPadre);
     }
 
-
-    public BigInteger getNonce() {
-        return nonce;
+    public void crearBus(String placa, int capacidad, String marca, Driver driver, String ruta) {
+        this.facade.crearBus(placa, capacidad, marca, driver, ruta);
     }
 
     /*public BigInteger getNonceByIP(String ip){

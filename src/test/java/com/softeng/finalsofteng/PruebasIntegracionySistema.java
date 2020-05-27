@@ -26,6 +26,7 @@ public class PruebasIntegracionySistema {
     /**
      * Acceder al sistema
      */
+    /*
     @Test
     public void ingresaralSistema() {
 
@@ -41,12 +42,14 @@ public class PruebasIntegracionySistema {
         }
 
     }
-
+*/
 
     /**
      * Composite agregar una localidad
      */
+    /*
     @Test
+
     public void agregarunaLocalidad() {
 
         try {
@@ -79,11 +82,12 @@ public class PruebasIntegracionySistema {
         }
 
     }
-
+*/
 
     /**
      * Composite crear usuario
      */
+    /*
     @Test
     public void crearUsuario() {
 
@@ -120,11 +124,12 @@ public class PruebasIntegracionySistema {
         }
 
     }
-
+*/
 
     /**
      * Composite agregar usuario
      */
+    /*
     @Test
     public void agregarUsuario() {
 
@@ -170,13 +175,14 @@ public class PruebasIntegracionySistema {
         }
 
     }
-
+*/
 
     //adicionar usuario a composite
 
     /**
      * Composite agregar usuario
      */
+    /*
     @Test
     public void agregarUsuarioaCiudad() {
 
@@ -227,13 +233,14 @@ public class PruebasIntegracionySistema {
         }
 
     }
-
+*/
 
     //listar usuarios de ciudad
 
     /**
      * Composite listar usuarios
      */
+    /*
     @Test
     public void listarUsuarioaCiudad() {
 
@@ -294,5 +301,6 @@ public class PruebasIntegracionySistema {
         }
 
     }
+     */
 
 }

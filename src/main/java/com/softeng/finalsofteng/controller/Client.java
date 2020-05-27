@@ -1,15 +1,26 @@
 package com.softeng.finalsofteng.controller;
 
+import com.softeng.finalsofteng.model.Bus;
+import com.softeng.finalsofteng.model.Driver;
+import com.softeng.finalsofteng.model.User;
 import com.softeng.finalsofteng.model.Zona;
+import com.softeng.finalsofteng.repository.IBusRepository;
+import com.softeng.finalsofteng.repository.IDriverRepository;
+import com.softeng.finalsofteng.repository.IUserRepository;
+import com.softeng.finalsofteng.repository.IZonaRepository;
+import com.softeng.finalsofteng.service.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigInteger;
+import java.util.List;
 
 
 @Controller
@@ -17,9 +28,17 @@ public class Client {
 
     @Autowired
     private Proxy proxy;
-    //private final Facade facade = Facade.getInstance();
     private Encryption encryption;
-
+    @Autowired
+    private IZonaRepository zonaRepository;
+    @Autowired
+    private IAuthService authService;
+    @Autowired
+    private IUserRepository userRepository;
+    @Autowired
+    private IDriverRepository driverRepository;
+    @Autowired
+    private IBusRepository busRepository;
 
 
     @GetMapping("/")
@@ -28,20 +47,42 @@ public class Client {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestParam String email, @RequestParam String password,
-                                               @RequestParam String direccion, @RequestParam String documento,
-                                               @RequestParam String telefono, @RequestParam String nombreLugar) {
+    public ResponseEntity<?> registerUser(@RequestParam String email, @RequestParam String password,
+                                          @RequestParam String direccion, @RequestParam String documento,
+                                          @RequestParam String telefono, @RequestParam String nombreLugar) {
         Zona zona = new Zona(nombreLugar);
-        this.proxy.registerUser(email, password, direccion, documento, telefono, zona);
-        return new ResponseEntity<>("200",
-                HttpStatus.OK);
+        User user = this.proxy.registerUser(email, password, direccion, documento, telefono, zona);
+        return new ResponseEntity<>(user,
+                HttpStatus.CREATED);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<?> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> accederSistema(String email, String password) throws Exception {
-        BigInteger nonce = this.proxy.accederSistema(email, password);
-        this.encryption = Encryption.getInstance(nonce.toString());
-        return new ResponseEntity<>(nonce, HttpStatus.OK);
+    public ResponseEntity<?> accederSistema(@RequestParam String email, @RequestParam String password) throws Exception {
+        Authentication authentication = authService.getAuthentication();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(authentication.getCredentials().toString() + "\n");
+        System.out.println(passwordEncoder.matches(authentication.getCredentials().toString(), encodedPassword));
+        System.out.print(encodedPassword);
+        User user = userRepository.findByEmail(authentication.getName());
+        if (user != null && authentication.getCredentials().toString().equals(user.getPassword())) {
+            authentication.setAuthenticated(true);
+            return new ResponseEntity<>("Logeado", HttpStatus.OK);
+        } else return new ResponseEntity<>("No Logeado", HttpStatus.NOT_FOUND);
+        //authentication.setAuthenticated(false);
+
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        Authentication authentication = authService.getAuthentication();
+        authentication.setAuthenticated(false);
+        return new ResponseEntity<>("Cerro sesion", HttpStatus.OK);
     }
 
     /*
@@ -63,7 +104,37 @@ public class Client {
         else return new ResponseEntity<>(HttpStatus.FOUND);
     }
 
-    /*@PostMapping("/bus")
-    public ResponseEntity<?> createBus()
-*/
+    @PostMapping("/localidadaciudad")
+    public ResponseEntity<?> agregarLocalidadACiudad(@RequestParam String nombreLocalidad, @RequestParam String nombreCiudad) {
+        if (nombreCiudad == "" || nombreLocalidad == "")
+            return new ResponseEntity<>("ERROR: nombre de la ciudad o nombre de localidad faltante", HttpStatus.NOT_FOUND);
+
+        Zona zonaPadre = zonaRepository.findByNombreLugar(nombreCiudad);
+        this.proxy.crearContenedor(nombreLocalidad, zonaPadre);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
+
+    @PostMapping("/bus")
+    public ResponseEntity<?> createBus(@RequestParam String placa, @RequestParam int capacidad,
+                                       @RequestParam String marca, @RequestParam String driverName,
+                                       @RequestParam String route) {
+        Driver driver = driverRepository.findByName(driverName);
+        this.proxy.crearBus(placa, capacidad, marca, driver, route);
+        return new ResponseEntity<>("Created", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/bus")
+    public ResponseEntity<?> getAllBuses() {
+        return new ResponseEntity<>(busRepository.findAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/bus/conductor")
+    public ResponseEntity<?> createBusDriver(@RequestParam String nombre, @RequestParam String apellido,
+                                             @RequestParam int edad) {
+        Driver driver = new Driver(nombre, apellido, edad);
+        driverRepository.save(driver);
+        return new ResponseEntity<>(driver, HttpStatus.CREATED);
+    }
+
 }

@@ -1,11 +1,11 @@
 package com.softeng.finalsofteng.config;
 
 import com.softeng.finalsofteng.controller.Facade;
+import com.softeng.finalsofteng.model.Role;
 import com.softeng.finalsofteng.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,14 +20,23 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder()).and().eraseCredentials(false);;
 
     }
 
     // Secure the endpoins with HTTP Basic authentication
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
+        http
+                .httpBasic()
+                .and()
+                //.authorizeRequests()
+                //.antMatchers("/zonas", "/users").hasRole("USER")
+                //.and()
+                .cors()
+                .and()
+                .csrf()
+                .disable();
     }
 
     @Bean

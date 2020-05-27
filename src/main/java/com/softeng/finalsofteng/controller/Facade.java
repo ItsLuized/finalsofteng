@@ -48,7 +48,7 @@ public class Facade implements ILogin {
         //this.users.put(ip, user);
     }
 
-    private void crearBus(Driver driver, String ruta, String placa, int capacidad, String marca) {
+    public void crearBus(String placa, int capacidad, String marca, Driver driver, String ruta) {
         Route route = null;
         switch (ruta.toLowerCase()){
             case "septima":
@@ -70,6 +70,7 @@ public class Facade implements ILogin {
 
         ruta = ruta.toUpperCase();
         Bus bus = new Bus(placa, capacidad, marca, driver, route);
+        busRepository.save(bus);
         this.buses.add(bus);
     }
 
@@ -87,7 +88,8 @@ public class Facade implements ILogin {
 
     public void crearContenedor(String nombreLugar, Zona zonaPadre){
         Zona zona = new Zona(nombreLugar);
-        zona.setZonaPadre(zonaPadre);
+        Zona zonaGrande = zonaRepository.findByNombreLugar(zonaPadre.getNombreLugar());
+        zona.setZonaPadre(zonaGrande);
         zonaRepository.save(zona);
         if (zonaPadre != null) {
             zonaPadre.add(zona);
@@ -145,10 +147,10 @@ public class Facade implements ILogin {
     }
 
     @Override
-    public void registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
+    public User registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
         zonaRepository.save(zona);
         User user = new User(email, password, direccion, documento, telefono, zona, Role.USER);
-        userService.registerUser(user);
+        return userService.registerUser(user);
     }
 
     public String getZonasString() {
