@@ -50,7 +50,9 @@ public class Client {
     public ResponseEntity<?> registerUser(@RequestParam String email, @RequestParam String password,
                                           @RequestParam String direccion, @RequestParam String documento,
                                           @RequestParam String telefono, @RequestParam String nombreLugar) {
-        Zona zona = new Zona(nombreLugar);
+        Zona zona = zonaRepository.findByNombreLugar(nombreLugar);
+        if (zona == null)
+            return new ResponseEntity<>("Zona no existente.", HttpStatus.NOT_FOUND);
         User user = this.proxy.registerUser(email, password, direccion, documento, telefono, zona);
         return new ResponseEntity<>(user,
                 HttpStatus.CREATED);
@@ -144,18 +146,17 @@ public class Client {
     //@GetMapping("/menuusuario") Anotacion para el menuUsuario
 
     @PostMapping("/ciudad")
-    public ResponseEntity<?> addCiudad(@RequestParam String nombreCiudad, @RequestParam String nombrePadre) {
+    public ResponseEntity<?> addCiudad(@RequestParam String nombreCiudad) {
         if (nombreCiudad == "")
             return new ResponseEntity<>("ERROR: nombre de la localidad faltante", HttpStatus.NOT_FOUND);
 
-        Zona zonaPadre = zonaRepository.findByNombreLugar(nombrePadre);
-        this.proxy.crearContenedor(nombreCiudad, zonaPadre);
+        this.proxy.crearContenedor(nombreCiudad, null);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/localidad")
     public ResponseEntity<?> addLocalidad(@RequestParam String nombreLocalidad, @RequestParam String nombreCiudad) {
-        if (nombreLocalidad == "" || nombreCiudad == null)
+        if (nombreLocalidad == "" || nombreCiudad == "")
             return new ResponseEntity<>("ERROR: nombre de la localidad o nombre ciudad faltante", HttpStatus.NOT_FOUND);
 
         Zona zonaPadre = zonaRepository.findByNombreLugar(nombreCiudad);
