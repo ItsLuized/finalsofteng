@@ -29,6 +29,7 @@ public class User {
     private String telefono;
 
     @ManyToOne
+    @JoinColumn(name = "zona_id")
     private Zona zona;
 
     public User(String email, String password, String direccion, String documento, String telefono, Zona zona) {

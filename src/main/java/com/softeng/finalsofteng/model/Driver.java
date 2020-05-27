@@ -14,7 +14,7 @@ public class Driver {
 
     @Id
     @GeneratedValue
-    private long idDriver;
+    private long driverId;
 
     private String name;
     private String lastName;

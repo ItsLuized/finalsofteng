@@ -8,12 +8,12 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table
+@Table(name = "Bus")
 public class Bus {
 
     @Id
     @GeneratedValue
-    private long idBus;
+    private long busId;
     @NotNull
     private String placa;
     @NotNull
@@ -21,6 +21,7 @@ public class Bus {
     @NotNull
     private String marca;
     @ManyToOne
+    @JoinColumn(name = "driver_id")
     private Driver driver;
     @Enumerated(EnumType.STRING)
     private Route route;
