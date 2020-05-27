@@ -34,7 +34,7 @@
 <section>
     <div class="section container scrollspy" id="contact">
         <div class="row">
-            <form class="col s12" action="#" method="post">
+            <form class="col s12" action="#" th:action="@{/localidad}" th:object="${driver}" method="post">
                 <div>
                     <br>
                     <h1 class="header center">Crear Nueva Localidad</h1>
@@ -43,7 +43,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <h6>Nombre de la Localidad</h6>
-                            <input id="NombreCiudad" type="text" value="" class="validate">
+                            <input id="NombreCiudad" type="text" value="" th:field="*{name}" class="validate">
                     </div>
                 </div>
                 <div class="row">

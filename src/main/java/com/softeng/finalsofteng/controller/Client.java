@@ -131,36 +131,6 @@ public class Client {
     }
 
 
-    //CAMBIO NUEVO HECHO POR JUANSE PARA LISTAR BUSES
-    @GetMapping("/ListaBus")
-    public String ListarBuses(Model model){
-        List<Bus> ListadeBuses = busRepository.findAll();
-        model.addAttribute("ListadeBuses", ListadeBuses);
-        return "ListaBuses"; }
-     //CAMBIO NUEVO HECHO POR JUANSE PARA LISTAR BUSES (No probado jeje)
-
-
-    //Cambio para crar conductor NICKY Y JUANSE
-    @GetMapping("/conductor")
-    public String crearConductor(Model model){
-        Driver driver = new Driver();
-        model.addAttribute("driver", driver);
-        return "NewConductor"; } //Esto esta llamando al template NewConductor
-
-    @PostMapping("/conductor") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
-    public String saveConductor(@ModelAttribute("driver") Driver driver){
-        driverRepository.save(driver);
-        return "redirect:/";
-    }
-    //Cambio para crear conductor Nicky y Juanse
-
-    @RequestMapping("/CrearBus")
-    public String CrearUnBus(Model model){
-
-        return "NewBus";
-    }
-
-
     @PostMapping("/bus/conductor")
     public ResponseEntity<?> createBusDriver(@RequestParam String nombre, @RequestParam String apellido,
                                              @RequestParam int edad) {
@@ -193,4 +163,47 @@ public class Client {
         this.proxy.crearContenedor(nombreLocalidad, zonaPadre);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+
+
+    /*---------------------------------------------------------------------------*/
+
+
+    @GetMapping("/ListaBus")
+    public String ListarBuses(Model model){
+        List<Bus> ListadeBuses = busRepository.findAll();
+        model.addAttribute("ListadeBuses", ListadeBuses);
+        return "ListaBuses"; }
+
+
+    @GetMapping("/conductor")
+    public String crearConductor(Model model){
+        Driver driver = new Driver();
+        model.addAttribute("driver", driver);
+        return "NewConductor"; } //Esto esta llamando al template NewConductor
+
+    @PostMapping("/conductor") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    public String saveConductor(@ModelAttribute("driver") Driver driver){
+        driverRepository.save(driver);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/CrearBus")
+    public String CrearUnBus(Model model){
+
+        return "NewBus";
+    }
+
+    @GetMapping("/nuevaCiudad")
+    public String crearCiudad(Model model){
+        Zona zonaCiudad = new Zona();
+        model.addAttribute("zonaCiudad", zonaCiudad);
+        return "NewCiudad"; }
+
+    @PostMapping("/nuevaCiudad") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    public String saveCiudad(@ModelAttribute("zonaCiudad") Zona zonaCiudad){
+        zonaRepository.save(zonaCiudad);
+        return "redirect:/";
+    }
+
 }
