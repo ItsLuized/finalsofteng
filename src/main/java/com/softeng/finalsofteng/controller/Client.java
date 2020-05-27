@@ -16,8 +16,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -130,6 +132,28 @@ public class Client {
     public ResponseEntity<?> getAllBuses() {
         return new ResponseEntity<>(busRepository.findAll(), HttpStatus.OK);
     }
+
+
+    //CAMBIO NUEVO HECHO POR JUANSE PARA LISTAR BUSES
+    @GetMapping("/ListaBus")
+    public String ListarBuses(Model model){
+        List<Bus> ListadeBuses = busRepository.findAll();
+        model.addAttribute("ListadeBuses", ListadeBuses);
+        return "ListaBuses"; }
+
+     //CAMBIO NUEVO HECHO POR JUANSE PARA LISTAR BUSES
+
+    //CAMBIO NUEVO HECHO POR JUANSE Y NICKY PARA AGREGAR UN BUS
+
+    @RequestMapping("/CrearBus")
+    public String CrearUnBus(Model model){
+
+        return "NewBus";
+    }
+
+    
+    //CAMBIO NUEVO HECHO POR JUANSE Y NICKY PARA AGREGAR UN BUS
+
 
     @PostMapping("/bus/conductor")
     public ResponseEntity<?> createBusDriver(@RequestParam String nombre, @RequestParam String apellido,
