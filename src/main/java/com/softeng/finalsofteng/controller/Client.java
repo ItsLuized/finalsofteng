@@ -16,8 +16,9 @@ import java.math.BigInteger;
 @Controller
 public class Client {
 
-    private final Proxy proxy = Proxy.getInstance();
-    private final Facade facade = Facade.getInstance();
+    @Autowired
+    private Proxy proxy;
+    //private final Facade facade = Facade.getInstance();
     private Encryption encryption;
 
     @Autowired
@@ -33,7 +34,9 @@ public class Client {
     public ResponseEntity<String> registerUser(@RequestParam String email, @RequestParam String password,
                                                @RequestParam String direccion, @RequestParam String documento,
                                                @RequestParam String telefono, @RequestParam String nombreLugar) {
-        userService.registerUser(email, password, direccion, documento, telefono, nombreLugar);
+        Zona zona = new Zona(nombreLugar);
+        this.proxy.registerUser(email, password, direccion, documento, telefono, zona);
+        //userService.registerUser(email, password, direccion, documento, telefono, nombreLugar);
         return new ResponseEntity<>("200",
                 HttpStatus.OK);
     }

@@ -5,12 +5,14 @@ import com.softeng.finalsofteng.repository.IUserRepository;
 import com.softeng.finalsofteng.repository.IZonaRepository;
 import com.softeng.finalsofteng.repository.IBusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class Facade implements ILogin {
     private static Facade instance = null;
     private final Map<String, User> users; // Map consisting of ip and user
@@ -139,6 +141,7 @@ public class Facade implements ILogin {
 
     @Override
     public void registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
+        zonaRepository.save(zona);
         User user = new User(email, password, direccion, documento, telefono, zona);
         userRepository.save(user);
     }

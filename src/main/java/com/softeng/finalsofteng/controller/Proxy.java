@@ -7,17 +7,20 @@ import com.softeng.finalsofteng.model.Zona;
 import com.softeng.finalsofteng.repository.IUserRepository;
 import com.softeng.finalsofteng.repository.IZonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class Proxy implements ILogin {
     private static Proxy instance = null;
     private final Map<String, User> users;
     private final Map<String, BigInteger> ipNonce;
-    private final Facade facade;
+    @Autowired
+    private Facade facade;
     private final Map<String, Zona> zonas;
     private BigInteger nonce;
     @Autowired
@@ -28,7 +31,6 @@ public class Proxy implements ILogin {
     private Proxy() {
         this.users = new HashMap();
         this.ipNonce = new HashMap<>();
-        facade = Facade.getInstance();
         this.zonas = new HashMap<>();
         this.nonce = new BigInteger("0");
     }
@@ -44,14 +46,6 @@ public class Proxy implements ILogin {
         this.facade.registerUser(email, password, direccion, documento, telefono, zona);
     }
 
-    /*public void registerUser(String email, String password, String nombre, String direccion, String telefono, String ciudad) {
-        if (!this.users.containsKey(email))
-            this.users.put(email, new User(email, password, nombre, direccion, telefono));
-        if (!this.zonas.containsKey(ciudad)) {
-            this.zonas.put(ciudad, new Zona(ciudad));
-        }
-        this.zonas.get(ciudad).add(this.users.get(email));
-    }*/
 
     public BigInteger accederSistema(String email, String password, String ip) throws Exception {
         User user = userRepository.findByEmail(email);
