@@ -137,4 +137,29 @@ public class Client {
         return new ResponseEntity<>(driver, HttpStatus.CREATED);
     }
 
+    //@GetMapping("/menu") Anotacion para el menu
+
+    //@GetMapping("/menubus") Anotacion para el menuBus
+
+    //@GetMapping("/menuusuario") Anotacion para el menuUsuario
+
+    @PostMapping("/ciudad")
+    public ResponseEntity<?> addCiudad(@RequestParam String nombreCiudad, @RequestParam String nombrePadre) {
+        if (nombreCiudad == "")
+            return new ResponseEntity<>("ERROR: nombre de la localidad faltante", HttpStatus.NOT_FOUND);
+
+        Zona zonaPadre = zonaRepository.findByNombreLugar(nombrePadre);
+        this.proxy.crearContenedor(nombreCiudad, zonaPadre);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/localidad")
+    public ResponseEntity<?> addLocalidad(@RequestParam String nombreLocalidad, @RequestParam String nombreCiudad) {
+        if (nombreLocalidad == "" || nombreCiudad == null)
+            return new ResponseEntity<>("ERROR: nombre de la localidad o nombre ciudad faltante", HttpStatus.NOT_FOUND);
+
+        Zona zonaPadre = zonaRepository.findByNombreLugar(nombreCiudad);
+        this.proxy.crearContenedor(nombreLocalidad, zonaPadre);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }

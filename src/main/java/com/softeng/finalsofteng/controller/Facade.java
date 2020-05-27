@@ -88,8 +88,7 @@ public class Facade implements ILogin {
 
     public void crearContenedor(String nombreLugar, Zona zonaPadre){
         Zona zona = new Zona(nombreLugar);
-        Zona zonaGrande = zonaRepository.findByNombreLugar(zonaPadre.getNombreLugar());
-        zona.setZonaPadre(zonaGrande);
+        zona.setZonaPadre(zonaPadre);
         zonaRepository.save(zona);
         if (zonaPadre != null) {
             zonaPadre.add(zona);
