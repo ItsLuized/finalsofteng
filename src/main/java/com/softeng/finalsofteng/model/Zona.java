@@ -24,33 +24,10 @@ public class Zona {
     private long zonaId;
     @NotNull
     private String nombreLugar;
-    /*
-    @OneToMany
-    private List<Zona> zonasHijas;
-    */
     @OneToOne
-    /*
-    @JsonIdentityReference(alwaysAsId=true)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "zona_id")
-    */
     private Zona zonaPadre;
 
     public Zona(String nombreLugar) {
         this.nombreLugar = nombreLugar;
-        //this.zonasHijas = new ArrayList<>();
     }
-
-    /*
-    public void add(Zona zona) {
-        this.zonasHijas.add(zona);
-    }
-
-    public List<Zona> getLista() {
-        return zonasHijas;
-    }
-
-    public void setLista(List<Zona> zona) {
-        this.zonasHijas = zona;
-    }
-    */
 }

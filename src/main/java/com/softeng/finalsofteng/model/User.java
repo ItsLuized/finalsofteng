@@ -33,10 +33,6 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "zona_id")
-    /*
-    @JsonIdentityReference(alwaysAsId=true)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    */
     private Zona zona;
 
     private Role role;
