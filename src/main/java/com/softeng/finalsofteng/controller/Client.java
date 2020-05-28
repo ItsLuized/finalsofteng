@@ -286,11 +286,8 @@ public class Client {
 
     @PostMapping("/localidad") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
     public String saveLocalidad(@ModelAttribute("zonaLocalidad") Zona zonaLocalidad) {
-        //zonaRepository.save(zonaLocalidad);
-
         Zona zonaPadre = zonaLocalidad.getZonaPadre();
         this.proxy.crearContenedor(zonaLocalidad.getNombreLugar(), zonaPadre);
-
 
         return "redirect:/menu-usuario";
     }
@@ -312,9 +309,6 @@ public class Client {
     @PostMapping("/bus") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
     public String saveBus(@ModelAttribute("nuevoBus") Bus nuevoBus) {
         busRepository.save(nuevoBus);
-        /*Driver driver = nuevoBus.getDriver();
-        Route route = nuevoBus.getRoute();
-        this.proxy.crearBus(nuevoBus.getPlaca(), nuevoBus.getCapacidad(), nuevoBus.getMarca(), driver, route.toString());*/
 
         return "redirect:/menu-bus";
 
