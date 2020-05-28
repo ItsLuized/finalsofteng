@@ -1,5 +1,8 @@
 package com.softeng.finalsofteng.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +33,10 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "zona_id")
+    /*
+    @JsonIdentityReference(alwaysAsId=true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    */
     private Zona zona;
 
     private Role role;
