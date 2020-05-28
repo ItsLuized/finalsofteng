@@ -35,38 +35,39 @@
     <div class="section container scrollspy" id="contact">
         <div class="row">
             <form class="col s12" action="#" th:action="@{/localidad}" method="post">
-            <div>
-                <br>
-                <h1 class="header center">Crear Nueva Localidad</h1>
+                <div>
+                    <br>
+                    <h1 class="header center">Crear Nueva Localidad</h1>
 
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="NombreLocalidad" type="text" value="" th:field="*{zonaLocalidad.nombreLugar}" class="validate">
-                    <label for="NombreLocalidad">Nombre de la Localidad</label>
                 </div>
-            </div>
-                <br> <br>
-            <div class="input-field col s12">
-                <select id="zonaExistente" name="zonaPadre">
-                    <option value="" disabled selected>Elija una opción</option>
-                    <option th:each="zona : ${zonasExistentes}"
-                            th:value="${zona.getZonaId()}"
-                            th:text="${zona.nombreLugar}"></option>
-                </select>
-                <label>Seleccione la Ciudad</label>
-            </div>
-                <br> <br>
-            <div class="row">
                 <div class="row">
-                    <div class="input-field col s13 ">
-                        <input type="submit" value="Crear" class="btn light-dark green ">
-                    </div>
-                    <div class="input-field col s13">
-                        <a class="btn grey" id="cancelar" onclick="window.history.back();">Cancelar</a>
+                    <div class="input-field col s12">
+                        <input id="NombreLocalidad" type="text" value="" th:field="*{zonaLocalidad.nombreLugar}"
+                               class="validate">
+                        <label for="NombreLocalidad">Nombre de la Localidad</label>
                     </div>
                 </div>
-            </div>
+                <br> <br>
+                <div class="input-field col s12">
+                    <select id="zonaExistente" name="zonaPadre">
+                        <option value="" disabled selected>Elija una opción</option>
+                        <option th:each="zona : ${zonasExistentes}"
+                                th:value="${zona.getZonaId()}"
+                                th:text="${zona.nombreLugar}"></option>
+                    </select>
+                    <label>Seleccione la Ciudad</label>
+                </div>
+                <br> <br>
+                <div class="row">
+                    <div class="row">
+                        <div class="input-field col s13 ">
+                            <input type="submit" value="Crear" class="btn light-dark green ">
+                        </div>
+                        <div class="input-field col s13">
+                            <a class="btn grey" id="cancelar" onclick="window.history.back();">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -75,8 +76,8 @@
 
 <!--  Scripts-->
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" th:src="@{/js/materialize.js}"></script>t>
-<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>t>
+<script type="text/javascript" th:src="@{/js/materialize.js}"></script>
+<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/init.js}"></script>
 
 <script>

@@ -41,22 +41,22 @@
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Escriba la Ruta">
         <table id="myTable" border striped="1">
             <thead>
-                <tr>
-                    <th>Placa</th>
-                    <th>Capacidad</th>
-                    <th>Marca</th>
-                    <th>Conductor</th>
-                    <th>Ruta</th>
-                </tr>
+            <tr>
+                <th>Placa</th>
+                <th>Capacidad</th>
+                <th>Marca</th>
+                <th>Conductor</th>
+                <th>Ruta</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="listaDeBuses : ${listaDeBuses}">
-                    <td th:text="${listaDeBuses.getPlaca()}"></td>
-                    <td th:text="${listaDeBuses.getCapacidad()}"></td>
-                    <td th:text="${listaDeBuses.getMarca()}"></td>
-                    <td th:text="${listaDeBuses.getDriver().getName()}"></td>
-                    <td th:text="${listaDeBuses.getRoute()}"></td>
-                </tr>
+            <tr th:each="listaDeBuses : ${listaDeBuses}">
+                <td th:text="${listaDeBuses.getPlaca()}"></td>
+                <td th:text="${listaDeBuses.getCapacidad()}"></td>
+                <td th:text="${listaDeBuses.getMarca()}"></td>
+                <td th:text="${listaDeBuses.getDriver().getName()}"></td>
+                <td th:text="${listaDeBuses.getRoute()}"></td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -66,8 +66,10 @@
 
     <!--  Scripts-->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/materialize.js}"></script>t>
-    <script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>t>
+    <script type="text/javascript" th:src="@{/js/materialize.js}"></script>
+    t>
+    <script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
+    t>
     <script type="text/javascript" th:src="@{/js/init.js}"></script>
 
     <script>
