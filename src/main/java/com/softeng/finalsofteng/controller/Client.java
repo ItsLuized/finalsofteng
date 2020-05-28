@@ -45,6 +45,7 @@ public class Client {
         return new ResponseEntity<>("Sirve", HttpStatus.OK);
     }
 
+    /*
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestParam String email, @RequestParam String password,
                                           @RequestParam String direccion, @RequestParam String documento,
@@ -86,12 +87,12 @@ public class Client {
         return new ResponseEntity<>("Cerro sesion", HttpStatus.OK);
     }
 
-    /*
+
     @RequestMapping("/noexiste")
     public Object elaborarOperacion(String mesgNotEncrypted, String ip) throws Exception {
         return this.facade.elaborarOperacion(this.encryption.encrypt(mesgNotEncrypted), ip);
     }
-    */
+
 
 
     @GetMapping("/zonas")
@@ -163,10 +164,18 @@ public class Client {
         this.proxy.crearContenedor(nombreLocalidad, zonaPadre);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    */
 
 
     /*---------------------------------------------------------------------------*/
+
+
+    //Logica para los Menus
+    @GetMapping("/menu")
+    public String menuPrincial(){
+        return "Menu"; } //Esto esta llamando al template NewConductor
+
+
 
 
     @GetMapping("/ListaBus")
@@ -175,7 +184,7 @@ public class Client {
         model.addAttribute("ListadeBuses", ListadeBuses);
         return "ListaBuses"; }
 
-
+    //Logica para manejar creación de conductores
     @GetMapping("/conductor")
     public String crearConductor(Model model){
         Driver driver = new Driver();
@@ -187,23 +196,44 @@ public class Client {
         driverRepository.save(driver);
         return "redirect:/";
     }
-
-    @RequestMapping("/CrearBus")
-    public String CrearUnBus(Model model){
-
-        return "NewBus";
-    }
-
-    @GetMapping("/nuevaCiudad")
+    //Logica para manejar creación de Ciudades
+    @GetMapping("/ciudad")
     public String crearCiudad(Model model){
         Zona zonaCiudad = new Zona();
         model.addAttribute("zonaCiudad", zonaCiudad);
         return "NewCiudad"; }
 
-    @PostMapping("/nuevaCiudad") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    @PostMapping("/ciudad") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
     public String saveCiudad(@ModelAttribute("zonaCiudad") Zona zonaCiudad){
-        zonaRepository.save(zonaCiudad);
+        this.proxy.crearContenedor(zonaCiudad.getNombreLugar(), null);
+
         return "redirect:/";
+    }
+
+    @GetMapping("/localidad")
+    public String crearLocalidad(Model model){
+        Zona zonaLocalidad = new Zona();
+        model.addAttribute("zonaLocalidad", zonaLocalidad);
+        List<Zona> zonas = zonaRepository.findAll();
+        model.addAttribute("zonasExistentes", zonas);
+        return "NewLocalidad";
+    }
+
+    @PostMapping("/localidad") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    public String saveLocalidad(@ModelAttribute("zonaLocalidad") Zona zonaLocalidad){
+        //zonaRepository.save(zonaLocalidad);
+
+        Zona zonaPadre = zonaLocalidad.getZonaPadre();
+        this.proxy.crearContenedor(zonaLocalidad.getNombreLugar(), zonaPadre);
+
+
+        return "redirect:/";
+    }
+
+    @RequestMapping("/CrearBus")
+    public String CrearUnBus(Model model){
+
+        return "NewBus";
     }
 
 }
