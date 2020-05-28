@@ -18,17 +18,17 @@
       <ul class="right hide-on-med-and-down">
         <li><a href="/menu">Menú Principal</a></li>
         <li><a href="#">Wheels</a></li>
-        <li><a href="/menu/menu-bus">Buses</a></li>
+        <li><a href="/menu-bus">Buses</a></li>
         <li><a href="#">Tren</a></li>
-        <li><a href="/menu/menu-usuario">Usuarios</a></li>
+        <li><a href="/menu-usuario">Usuarios</a></li>
       </ul>
 
       <ul id="nav-mobile" class="sidenav">
           <li><a href="/menu">Menú Principal</a></li>
           <li><a href="#">Wheels</a></li>
-          <li><a href="/menu/menu-bus">Buses</a></li>
+          <li><a href="/menu-bus">Buses</a></li>
           <li><a href="#">Tren</a></li>
-          <li><a href="/menu/menu-usuario">Usuarios</a></li>
+          <li><a href="/menu-usuario">Usuarios</a></li>
       </ul>
     <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
@@ -37,7 +37,7 @@
   <section>
     <div class="section container scrollspy" id="contact">
       <div class="row">
-        <form class="col s12" action="#" th:action="@{/menu/menu-bus/bus}" method="post">
+        <form class="col s12" action="#" th:action="@{/bus}" method="post">
           <div>
             <br>
             <h1 class="header center">Crear un Nuevo Bus</h1>
@@ -63,11 +63,11 @@
             <div class="row">
               <div class="input-field col s12">
                 <h6>Nombre del Conductor del Bus</h6>
-                <select id="conductorExistente" name="conductor">
+                <select id="conductorExistente" name="conductor" th:field="*{nuevoBus.driver}">
                   <option value="" disabled selected>Elija una opción</option>
-                  <option th:each="driversExistentes : ${driversExistentes}"
-                          th:value="${driversExistentes}"
-                          th:text="${driversExistentes.name}"></option>
+                  <option th:each="drivers : ${driversExistentes}"
+                          th:value="${drivers.getDriverId()}"
+                          th:text="${drivers.name}"></option>
                 </select>
                 <label>Seleccione el Conductor</label>
               </div>
@@ -75,11 +75,11 @@
           <div class="row">
             <div class="input-field col s12">
               <h6>Ruta que recorrera el Bus</h6>
-              <select id="rutaExistente" name="ruta">
+              <select id="rutaExistente" name="ruta" th:field="*{nuevoBus.route}">
                 <option value="" disabled selected>Elija una opción</option>
-                <option th:each="routes : ${routes}"
-                        th:value="${routes}"
-                        th:text="${routes}"></option>
+                <option th:each="ruta : ${routes}"
+                        th:value="${ruta}"
+                        th:text="${ruta}"></option>
               </select>
               <label>Seleccione la Ruta</label>
             </div>
