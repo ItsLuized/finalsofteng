@@ -16,17 +16,17 @@
         <ul class="right hide-on-med-and-down">
             <li><a href="/menu">Menú Principal</a></li>
             <li><a href="#">Wheels</a></li>
-            <li><a href="#">Buses</a></li>
+            <li><a href="/menu/menu-bus">Buses</a></li>
             <li><a href="#">Tren</a></li>
-            <li><a href="#">Usuario</a></li>
+            <li><a href="/menu/menu-usuario">Usuarios</a></li>
         </ul>
 
         <ul id="nav-mobile" class="sidenav">
             <li><a href="/menu">Menú Principal</a></li>
             <li><a href="#">Wheels</a></li>
-            <li><a href="#">Buses</a></li>
+            <li><a href="/menu/menu-bus">Buses</a></li>
             <li><a href="#">Tren</a></li>
-            <li><a href="#">Usuario</a></li>
+            <li><a href="/menu/menu-usuario">Usuarios</a></li>
         </ul>
         <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
@@ -34,7 +34,7 @@
 <section>
     <div class="section container scrollspy" id="contact">
         <div class="row">
-            <form class="col s12" action="#" th:action="@{/localidad}" method="post">
+            <form class="col s12" action="#" th:action="@{/menu/menu-usuario/localidad}" method="post">
             <div>
                 <br>
                 <h1 class="header center">Crear Nueva Localidad</h1>

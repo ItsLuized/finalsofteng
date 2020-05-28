@@ -16,19 +16,19 @@
   <nav class="green darken-2" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Menú Principal</a></li>
+        <li><a href="/menu">Menú Principal</a></li>
         <li><a href="#">Wheels</a></li>
-        <li><a href="#">Buses</a></li>
+        <li><a href="/menu/menu-bus">Buses</a></li>
         <li><a href="#">Tren</a></li>
-        <li><a href="#">Usuario</a></li>
+        <li><a href="/menu/menu-usuario">Usuarios</a></li>
       </ul>
 
       <ul id="nav-mobile" class="sidenav">
-          <li><a href="#">Menú Principal</a></li>
+          <li><a href="/menu">Menú Principal</a></li>
           <li><a href="#">Wheels</a></li>
-          <li><a href="#">Buses</a></li>
+          <li><a href="/menu/menu-bus">Buses</a></li>
           <li><a href="#">Tren</a></li>
-          <li><a href="#">Usuario</a></li>
+          <li><a href="/menu/menu-usuario">Usuarios</a></li>
       </ul>
     <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
@@ -40,7 +40,27 @@
         <form class="col s12" action="#" method="post">
           <div>
             <br>
-            <h1 class="header center">Listar usuarios por Ciudad</h1>
+            <h1 class="header center">Listar Usuarios por Ciudad</h1>
+              <br><br>
+              <table border="1">
+                  <thead>
+                  <tr>
+                      <th>Email</th>
+                      <th>Contraseña</th>
+                      <th>Documento</th>
+                      <th>Telefono</th>
+                      <th>Zona</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="listaDeBuses : ${listaDeBuses}">
+                      <td th:text="${listaDeBuses.getPlaca()}"></td>
+                      <td th:text="${listaDeBuses.getCapacidad()}"></td>
+                      <td th:text="${listaDeBuses.getMarca()}"></td>
+                      <td th:text="${listaDeBuses.getDriver()}"></td>
+                      <td th:text="${listaDeBuses.getRoute()}"</td>
+                  </tr>
+                  </tbody>
           </div>
             <br>
             <h1 class="header center">una vez este lista la bd y aprendamos a escoger elementos con una lista desplegable</h1>
