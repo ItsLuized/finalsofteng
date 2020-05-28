@@ -21,7 +21,7 @@
 <section>
     <div class="section container scrollspy" id="contact">
         <div class="row">
-            <form class="col s12" action="#" method="post">
+            <form class="col s12" action="" th:action="@{/login}" method="post">
                 <div>
                     <br>
                     <h1 class="header center">Bienvenido a PROmet</h1>
@@ -34,24 +34,21 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">email</i>
-                        <input id="correo" type="text" value="" class="validate">
+                        <input id="correo" type="text" value="" name="username" placeholder="Username" class="validate">
                         <label for="correo">Correo Electrónico</label>
 
                     </div>
                 </div>
-                <div class="row">
+                <div class="row ${error != null ? 'has-error' : ''}">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">lock_outline</i>
-                        <input id="contrasena" type="text" value="" class="validate">
+                        <input id="contrasena" type="password" value="" name="password" placeholder="Password" class="validate">
                         <label for="contrasena">Contraseña</label>
                     </div>
+                    <span>${error}</span>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </div>
 
-                <div class="input-field col s6">
-                    <i class="material-icons prefix">phone</i>
-                    <input id="icon_telephone" type="tel" class="validate">
-                    <label for="icon_telephone">Telephone</label>
-                </div>
 
                 <div class="row">
                     <div class="row">

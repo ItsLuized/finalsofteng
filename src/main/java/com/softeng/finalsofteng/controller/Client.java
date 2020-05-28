@@ -9,11 +9,15 @@ import com.softeng.finalsofteng.service.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,11 +42,27 @@ public class Client {
 
 
     @GetMapping("/")
-    public ResponseEntity<?> home() {
-        return new ResponseEntity<>("Sirve", HttpStatus.OK);
+    public String home(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken))
+            return "Menu";
+
+        // if it is not authenticated, then go to the Pantalla Inicio
+        return "PantallaInicio";
     }
 
-    /*
+    @GetMapping("/login")
+    public String loginPage(Model model, String error, String logout) {
+        if (error != null)
+            model.addAttribute("error", "Your username and password is invalid.");
+
+        if (logout != null)
+            model.addAttribute("message", "You have been logged out successfully.");
+
+        return "IniciarSesion";
+    }
+
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestParam String email, @RequestParam String password,
                                           @RequestParam String direccion, @RequestParam String documento,
@@ -55,94 +75,96 @@ public class Client {
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<?> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
+    /*
+        @GetMapping("/users")
+        public ResponseEntity<?> getAllUsers() {
+            List<User> users = userRepository.findAll();
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> accederSistema(@RequestParam String email, @RequestParam String password) throws Exception {
-        Authentication authentication = authService.getAuthentication();
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(authentication.getCredentials().toString() + "\n");
-        System.out.println(passwordEncoder.matches(authentication.getCredentials().toString(), encodedPassword));
-        System.out.print(encodedPassword);
-        User user = userRepository.findByEmail(authentication.getName());
-        if (user != null && authentication.getCredentials().toString().equals(user.getPassword())) {
-            authentication.setAuthenticated(true);
-            return new ResponseEntity<>("Logeado", HttpStatus.OK);
-        } else return new ResponseEntity<>("No Logeado", HttpStatus.NOT_FOUND);
-        //authentication.setAuthenticated(false);
+        @PostMapping("/login")
+        public ResponseEntity<?> accederSistema(@RequestParam String email, @RequestParam String password) throws Exception {
+            Authentication authentication = authService.getAuthentication();
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(authentication.getCredentials().toString() + "\n");
+            System.out.println(passwordEncoder.matches(authentication.getCredentials().toString(), encodedPassword));
+            System.out.print(encodedPassword);
+            User user = userRepository.findByEmail(authentication.getName());
+            if (user != null && authentication.getCredentials().toString().equals(user.getPassword())) {
+                authentication.setAuthenticated(true);
+                return new ResponseEntity<>("Logeado", HttpStatus.OK);
+            } else return new ResponseEntity<>("No Logeado", HttpStatus.NOT_FOUND);
+            //authentication.setAuthenticated(false);
 
-    }
+        }
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
-        Authentication authentication = authService.getAuthentication();
-        authentication.setAuthenticated(false);
-        return new ResponseEntity<>("Cerro sesion", HttpStatus.OK);
-    }
-
-
-    @RequestMapping("/noexiste")
-    public Object elaborarOperacion(String mesgNotEncrypted, String ip) throws Exception {
-        return this.facade.elaborarOperacion(this.encryption.encrypt(mesgNotEncrypted), ip);
-    }
+        @PostMapping("/logout")
+        public ResponseEntity<?> logout() {
+            Authentication authentication = authService.getAuthentication();
+            authentication.setAuthenticated(false);
+            return new ResponseEntity<>("Cerro sesion", HttpStatus.OK);
+        }
 
 
-
-    @GetMapping("/zonas")
-    public ResponseEntity<?> getZonas() {
-        return new ResponseEntity<>(this.proxy.getZonasString(), HttpStatus.OK);
-    }
-
-    @GetMapping("/existezona")
-    public ResponseEntity<?> existeZona(String nombreLugar) {
-        if (this.proxy.existeZona(nombreLugar) == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        else return new ResponseEntity<>(HttpStatus.FOUND);
-    }
-
-    @PostMapping("/localidadaciudad")
-    public ResponseEntity<?> agregarLocalidadACiudad(@RequestParam String nombreLocalidad, @RequestParam String nombreCiudad) {
-        if (nombreCiudad == "" || nombreLocalidad == "")
-            return new ResponseEntity<>("ERROR: nombre de la ciudad o nombre de localidad faltante", HttpStatus.NOT_FOUND);
-
-        Zona zonaPadre = zonaRepository.findByNombreLugar(nombreCiudad);
-        this.proxy.crearContenedor(nombreLocalidad, zonaPadre);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-
-    }
-
-    @PostMapping("/bus")
-    public ResponseEntity<?> createBus(@RequestParam String placa, @RequestParam int capacidad,
-                                       @RequestParam String marca, @RequestParam String driverName,
-                                       @RequestParam String route) {
-        Driver driver = driverRepository.findByName(driverName);
-        this.proxy.crearBus(placa, capacidad, marca, driver, route);
-        return new ResponseEntity<>("Created", HttpStatus.CREATED);
-    }
-
-    @GetMapping("/bus")
-    public ResponseEntity<?> getAllBuses() {
-        return new ResponseEntity<>(busRepository.findAll(), HttpStatus.OK);
-    }
+        @RequestMapping("/noexiste")
+        public Object elaborarOperacion(String mesgNotEncrypted, String ip) throws Exception {
+            return this.facade.elaborarOperacion(this.encryption.encrypt(mesgNotEncrypted), ip);
+        }
 
 
-    @PostMapping("/bus/conductor")
-    public ResponseEntity<?> createBusDriver(@RequestParam String nombre, @RequestParam String apellido,
-                                             @RequestParam int edad) {
-        Driver driver = new Driver(nombre, apellido, edad);
-        driverRepository.save(driver);
-        return new ResponseEntity<>(driver, HttpStatus.CREATED);
-    }
 
-    //@GetMapping("/menu") Anotacion para el menu
+        @GetMapping("/zonas")
+        public ResponseEntity<?> getZonas() {
+            return new ResponseEntity<>(this.proxy.getZonasString(), HttpStatus.OK);
+        }
 
-    //@GetMapping("/menubus") Anotacion para el menuBus
+        @GetMapping("/existezona")
+        public ResponseEntity<?> existeZona(String nombreLugar) {
+            if (this.proxy.existeZona(nombreLugar) == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            else return new ResponseEntity<>(HttpStatus.FOUND);
+        }
 
-    //@GetMapping("/menuusuario") Anotacion para el menuUsuario
+        @PostMapping("/localidadaciudad")
+        public ResponseEntity<?> agregarLocalidadACiudad(@RequestParam String nombreLocalidad, @RequestParam String nombreCiudad) {
+            if (nombreCiudad == "" || nombreLocalidad == "")
+                return new ResponseEntity<>("ERROR: nombre de la ciudad o nombre de localidad faltante", HttpStatus.NOT_FOUND);
 
+            Zona zonaPadre = zonaRepository.findByNombreLugar(nombreCiudad);
+            this.proxy.crearContenedor(nombreLocalidad, zonaPadre);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+
+        }
+
+        @PostMapping("/bus")
+        public ResponseEntity<?> createBus(@RequestParam String placa, @RequestParam int capacidad,
+                                           @RequestParam String marca, @RequestParam String driverName,
+                                           @RequestParam String route) {
+            Driver driver = driverRepository.findByName(driverName);
+            this.proxy.crearBus(placa, capacidad, marca, driver, route);
+            return new ResponseEntity<>("Created", HttpStatus.CREATED);
+        }
+
+        @GetMapping("/bus")
+        public ResponseEntity<?> getAllBuses() {
+            return new ResponseEntity<>(busRepository.findAll(), HttpStatus.OK);
+        }
+
+
+        @PostMapping("/bus/conductor")
+        public ResponseEntity<?> createBusDriver(@RequestParam String nombre, @RequestParam String apellido,
+                                                 @RequestParam int edad) {
+            Driver driver = new Driver(nombre, apellido, edad);
+            driverRepository.save(driver);
+            return new ResponseEntity<>(driver, HttpStatus.CREATED);
+        }
+
+        //@GetMapping("/menu") Anotacion para el menu
+
+        //@GetMapping("/menubus") Anotacion para el menuBus
+
+        //@GetMapping("/menuusuario") Anotacion para el menuUsuario
+
+    */
     @PostMapping("/ciudad")
     public ResponseEntity<?> addCiudad(@RequestParam String nombreCiudad) {
         if (nombreCiudad == "")
@@ -151,7 +173,7 @@ public class Client {
         this.proxy.crearContenedor(nombreCiudad, null);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+/*
     @PostMapping("/localidad")
     public ResponseEntity<?> addLocalidad(@RequestParam String nombreLocalidad, @RequestParam String nombreCiudad) {
         if (nombreLocalidad == "" || nombreCiudad == "")
@@ -189,8 +211,6 @@ public class Client {
     }
 
 
-
-
     //REGISTRO
     @GetMapping("/menu/menu-usuario/crearusuario")
     public String registrarUsuario(Model model) {
@@ -208,8 +228,6 @@ public class Client {
 
         return "redirect:/menu/menu-usuario";
     }
-
-
 
 
     //INICIO SESIÓN
@@ -242,7 +260,6 @@ public class Client {
     }
 
 
-
     //CONDUCTORES - Logica para manejar creación de conductores
     @GetMapping("/menu/menu-usuario/conductor")
     public String crearConductor(Model model) {
@@ -251,7 +268,8 @@ public class Client {
         return "NewConductor";
     } //Esto esta llamando al template NewConductor
 
-    @PostMapping("/menu/menu-usuario/conductor") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    @PostMapping("/menu/menu-usuario/conductor")
+    //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
     public String saveConductor(@ModelAttribute("driver") Driver driver) {
         driverRepository.save(driver);
         return "redirect:/menu/menu-usuario";
@@ -283,7 +301,8 @@ public class Client {
         return "NewLocalidad";
     }
 
-    @PostMapping("/menu/menu-usuario/localidad") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    @PostMapping("/menu/menu-usuario/localidad")
+    //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
     public String saveLocalidad(@ModelAttribute("zonaLocalidad") Zona zonaLocalidad) {
         //zonaRepository.save(zonaLocalidad);
 

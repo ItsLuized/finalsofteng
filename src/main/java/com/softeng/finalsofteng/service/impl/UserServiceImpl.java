@@ -68,13 +68,13 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
         if (user == null)
-            return null;
+            // return null;
+            throw new UsernameNotFoundException("User was not found in DB");
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         Role role = user.getRole();
         grantedAuthorities.add(new SimpleGrantedAuthority(role.toString()));
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getEmail(),
-                user.getPassword(), grantedAuthorities);
 
-        return userDetails;
+        return new org.springframework.security.core.userdetails.User(user.getEmail(),
+                user.getPassword(), grantedAuthorities);
     }
 }

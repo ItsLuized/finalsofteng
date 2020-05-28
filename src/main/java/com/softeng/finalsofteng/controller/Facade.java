@@ -90,12 +90,6 @@ public class Facade implements ILogin {
         Zona zona = new Zona(nombreLugar);
         zona.setZonaPadre(zonaPadre);
         zonaRepository.save(zona);
-        /*
-        if (zonaPadre != null) {
-            zonaPadre.add(zona);
-            zonaRepository.save(zonaPadre);
-        }
-         */
     }
 
     /*private String crearUsuario(String email, String password, String direccion, String documento, String telefono) {
