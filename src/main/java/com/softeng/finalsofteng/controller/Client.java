@@ -164,7 +164,6 @@ public class Client {
 
         //@GetMapping("/menuusuario") Anotacion para el menuUsuario
 
-    */
     @PostMapping("/ciudad")
     public ResponseEntity<?> addCiudad(@RequestParam String nombreCiudad) {
         if (nombreCiudad == "")
@@ -173,7 +172,7 @@ public class Client {
         this.proxy.crearContenedor(nombreCiudad, null);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-/*
+
     @PostMapping("/localidad")
     public ResponseEntity<?> addLocalidad(@RequestParam String nombreLocalidad, @RequestParam String nombreCiudad) {
         if (nombreLocalidad == "" || nombreCiudad == "")
@@ -190,16 +189,6 @@ public class Client {
 
 
     //LÓGICA DE MENUS
-    @GetMapping("/inicio")
-    public String pantallaInicio() {
-        return "PantallaInicio";
-    }
-
-    @GetMapping("/menu")
-    public String menuPrincial() {
-        return "Menu";
-    }
-
     @GetMapping("/menu-usuario")
     public String menuUsuario() {
         return "MenuUsuario";
