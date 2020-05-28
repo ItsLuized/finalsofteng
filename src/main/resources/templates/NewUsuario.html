@@ -14,14 +14,30 @@
 
 <body>
 <nav class="green darken-2" role="navigation">
-    <div class="center nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href="/menu">Menú Principal</a></li>
+            <li><a href="#">Wheels</a></li>
+            <li><a href="/menu-bus">Buses</a></li>
+            <li><a href="#">Tren</a></li>
+            <li><a href="/menu-usuario">Usuarios</a></li>
+        </ul>
+
+        <ul id="nav-mobile" class="sidenav">
+            <li><a href="/menu">Menú Principal</a></li>
+            <li><a href="#">Wheels</a></li>
+            <li><a href="/menu-bus">Buses</a></li>
+            <li><a href="#">Tren</a></li>
+            <li><a href="/menu-usuario">Usuarios</a></li>
+        </ul>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
 </nav>
 
 <section>
     <div class="section container scrollspy" id="contact">
         <div class="row">
-            <form class="col s12" action="#" th:action="@{/menu/menu-usuario/crearusuario}" method="post">
+            <form class="col s12" action="#" th:action="@{/crearusuario}" method="post">
                 <div>
                     <br>
                     <h1 class="header center">Bienvenido a PROmet</h1>
@@ -48,29 +64,29 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">home</i>
-                        <input id="direccion" type="text" value="" th:field="*{newUser.direccion}"  class="validate">
+                        <input id="direccion" type="text" value="" th:field="*{newUser.direccion}" class="validate">
                         <label for="direccion">Dirección</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">dvr</i>
-                        <input id="documento" type="text" value="" th:field="*{newUser.documento}"  class="validate">
+                        <input id="documento" type="text" value="" th:field="*{newUser.documento}" class="validate">
                         <label for="documento">Documento</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">local_phone</i>
-                        <input id="telefono" type="text" value="" th:field="*{newUser.telefono}"  class="validate">
+                        <input id="telefono" type="text" value="" th:field="*{newUser.telefono}" class="validate">
                         <label for="telefono">Teléfono</label>
                     </div>
                 </div>
                 <div class="input-field col s12">
-                    <select id="zonaExistente" name="zonaPadre">
+                    <select id="zonaExistente" name="zonaPadre" th:field="*{newUser.zona}">
                         <option value="" disabled selected>Elija una opción</option>
                         <option th:each="zona : ${zonasExistentes}"
-                                th:value="${zona}"
+                                th:value="${zona.getZonaId()}"
                                 th:text="${zona.nombreLugar}"></option>
                     </select>
                     <label>Seleccione la Zona</label>
@@ -93,8 +109,8 @@
 
 <!--  Scripts-->
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" th:src="@{/js/materialize.js}"></script>t>
-<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>t>
+<script type="text/javascript" th:src="@{/js/materialize.js}"></script>
+<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/init.js}"></script>
 
 <script>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>Nuevo Bus</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+</head>
+
+<body>
+<nav class="green darken-2" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href="/menu">Menú Principal</a></li>
+            <li><a href="#">Wheels</a></li>
+            <li><a href="/menu-bus">Buses</a></li>
+            <li><a href="#">Tren</a></li>
+            <li><a href="/menu-usuario">Usuarios</a></li>
+        </ul>
+
+        <ul id="nav-mobile" class="sidenav">
+            <li><a href="/menu">Menú Principal</a></li>
+            <li><a href="#">Wheels</a></li>
+            <li><a href="/menu-bus">Buses</a></li>
+            <li><a href="#">Tren</a></li>
+            <li><a href="/menu-usuario">Usuarios</a></li>
+        </ul>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+<section>
+    <div class="section container scrollspy" id="contact">
+        <div class="row">
+            <form class="col s12" action="#" method="post">
+                <br>
+                <h1 class="header center">Listar Usuarios por Zona</h1>
+                <br><br>
+                <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Escriba la Zona">
+                <table id="myTable" border striped="1">
+                    <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Documento</th>
+                        <th>Dirección</th>
+                        <th>Telefono</th>
+                        <th>Zona</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="listaDeUsuarios : ${listaDeUsuarios}">
+                        <td th:text="${listaDeUsuarios.getEmail()}"></td>
+                        <td th:text="${listaDeUsuarios.getDocumento()}"></td>
+                        <td th:text="${listaDeUsuarios.getDireccion()}"></td>
+                        <td th:text="${listaDeUsuarios.getTelefono()}"></td>
+                        <td th:text="${listaDeUsuarios.getZona().getNombreLugar()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" th:src="@{/js/materialize.js}"></script>
+<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/init.js}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+    });
+</script>
+
+<script>
+    function myFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[4];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

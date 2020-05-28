@@ -200,19 +200,19 @@ public class Client {
         return "Menu";
     }
 
-    @GetMapping("/menu/menu-usuario")
+    @GetMapping("/menu-usuario")
     public String menuUsuario() {
         return "MenuUsuario";
     }
 
-    @GetMapping("/menu/menu-bus")
+    @GetMapping("/menu-bus")
     public String menuBus() {
         return "MenuBus";
     }
 
 
     //REGISTRO
-    @GetMapping("/menu/menu-usuario/crearusuario")
+    @GetMapping("/crearusuario")
     public String registrarUsuario(Model model) {
         User newUser = new User();
         model.addAttribute("newUser", newUser);
@@ -222,77 +222,79 @@ public class Client {
         return "NewUsuario";
     }
 
-    @PostMapping("/menu/menu-usuario/crearusuario")
-    public String saveUsuario(@ModelAttribute("user") User user) {
-        this.proxy.registerUser(user.getEmail(), user.getPassword(), user.getDireccion(), user.getDocumento(), user.getTelefono(), user.getZona());
-
-        return "redirect:/menu/menu-usuario";
+    @PostMapping("/crearusuario")
+    public String saveUsuario(@ModelAttribute("newUser") User newUser) {
+        this.proxy.registerUser(newUser.getEmail(), newUser.getPassword(), newUser.getDireccion(), newUser.getDocumento(), newUser.getTelefono(), newUser.getZona());
+        //serRepository.save(newUser);
+        return "redirect:/menu-usuario";
     }
 
 
     //INICIO SESIÓN
-    @GetMapping("/inicio/sesion")
+    @GetMapping("/sesion")
     public String sesionUsuario() {
         return "IniciarSesion";
     }
 
 
     //LISTAS
-    @GetMapping("/menu/menu-bus/listabus")
+    @GetMapping("/listabus")
     public String listarBuses(Model model) {
         List<Bus> listaDeBuses = busRepository.findAll();
         model.addAttribute("listaDeBuses", listaDeBuses);
         return "ListaBuses";
     }
 
-    @GetMapping("/menu/menu-usuario/listausuariosciudad")
+    @GetMapping("/listausuarios")
     public String listarUsuariosCiudad(Model model) {
-        List<User> listaDeUsuarios = userRepository.findAll();
-        model.addAttribute("listaDeUsuarios", listaDeUsuarios);
-        return "ListarUsuariosporCiudad";
-    }
+        Zona zona = new Zona();
+        model.addAttribute("zona", zona);
+        List<Zona> listaDeZonas = zonaRepository.findAll();
+        model.addAttribute("listaDeZonas", listaDeZonas);
 
-    @GetMapping("/menu/menu-usuario/listausuarioslocalidad")
-    public String listarUsuariosLocalidad(Model model) {
         List<User> listaDeUsuarios = userRepository.findAll();
         model.addAttribute("listaDeUsuarios", listaDeUsuarios);
-        return "ListarUsuariosporLocalidad";
+
+        return "ListarUsuariosporZona";
     }
 
 
     //CONDUCTORES - Logica para manejar creación de conductores
-    @GetMapping("/menu/menu-usuario/conductor")
+    @GetMapping("/conductor")
     public String crearConductor(Model model) {
         Driver driver = new Driver();
         model.addAttribute("driver", driver);
         return "NewConductor";
     } //Esto esta llamando al template NewConductor
 
-    @PostMapping("/menu/menu-usuario/conductor")
+
+    //@PostMapping("/menu/menu-usuario/conductor")
     //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+
+    @PostMapping("/conductor") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
     public String saveConductor(@ModelAttribute("driver") Driver driver) {
         driverRepository.save(driver);
-        return "redirect:/menu/menu-usuario";
+        return "redirect:/menu-usuario";
     }
 
 
     //CIUDAD - Logica para manejar creación de Ciudades
-    @GetMapping("/menu/menu-usuario/ciudad")
+    @GetMapping("/ciudad")
     public String crearCiudad(Model model) {
         Zona zonaCiudad = new Zona();
         model.addAttribute("zonaCiudad", zonaCiudad);
         return "NewCiudad";
     }
 
-    @PostMapping("/menu/menu-usuario/ciudad") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    @PostMapping("/ciudad") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
     public String saveCiudad(@ModelAttribute("zonaCiudad") Zona zonaCiudad) {
         this.proxy.crearContenedor(zonaCiudad.getNombreLugar(), null);
 
-        return "redirect:/menu/menu-usuario";
+        return "redirect:/menu-usuario";
     }
 
     //LOCALIDAD
-    @GetMapping("/menu/menu-usuario/localidad")
+    @GetMapping("/localidad")
     public String crearLocalidad(Model model) {
         Zona zonaLocalidad = new Zona();
         model.addAttribute("zonaLocalidad", zonaLocalidad);
@@ -301,21 +303,19 @@ public class Client {
         return "NewLocalidad";
     }
 
-    @PostMapping("/menu/menu-usuario/localidad")
+    //@PostMapping("/menu/menu-usuario/localidad")
     //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    @PostMapping("/localidad") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
     public String saveLocalidad(@ModelAttribute("zonaLocalidad") Zona zonaLocalidad) {
-        //zonaRepository.save(zonaLocalidad);
-
         Zona zonaPadre = zonaLocalidad.getZonaPadre();
         this.proxy.crearContenedor(zonaLocalidad.getNombreLugar(), zonaPadre);
 
-
-        return "redirect:/menu/menu-usuario";
+        return "redirect:/menu-usuario";
     }
 
 
     //BUS
-    @GetMapping("/menu/menu-bus/bus")
+    @GetMapping("/bus")
     public String crearBus(Model model) {
         Bus nuevoBus = new Bus();
         model.addAttribute("nuevoBus", nuevoBus);
@@ -327,14 +327,11 @@ public class Client {
         return "NewBus";
     }
 
-    @PostMapping("/menu/menu-bus/bus") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
+    @PostMapping("/bus") //Esta dirección de aquí tiene que estar en el Action del Form en el HTML
     public String saveBus(@ModelAttribute("nuevoBus") Bus nuevoBus) {
         busRepository.save(nuevoBus);
-        /*Driver driver = nuevoBus.getDriver();
-        Route route = nuevoBus.getRoute();
-        this.proxy.crearBus(nuevoBus.getPlaca(), nuevoBus.getCapacidad(), nuevoBus.getMarca(), driver, route.toString());*/
 
-        return "redirect:/menu/menu-bus";
+        return "redirect:/menu-bus";
 
     }
 }
