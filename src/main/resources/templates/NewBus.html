@@ -1,116 +1,91 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>Nuevo Bus</title>
-
-    <!-- CSS  -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+      <title>Nuevo Bus</title>
+      
+        <!-- CSS  -->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
 
 </head>
 
 <body>
-<nav class="green darken-2" role="navigation">
+  <nav class="green darken-2" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
-        <ul class="right hide-on-med-and-down">
-            <li><a href="/">Menú Principal</a></li>
-            <li><a href="#">Wheels</a></li>
-            <li><a href="/menu-bus">Buses</a></li>
-            <li><a href="#">Tren</a></li>
-            <li><a href="/menu-usuario">Usuarios</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Menú Principal</a></li>
+        <li><a href="#">Wheels</a></li>
+        <li><a href="#">Buses</a></li>
+        <li><a href="#">Tren</a></li>
+        <li><a href="#">Usuario</a></li>
+      </ul>
 
-        <ul id="nav-mobile" class="sidenav">
-            <li><a href="/">Menú Principal</a></li>
-            <li><a href="#">Wheels</a></li>
-            <li><a href="/menu-bus">Buses</a></li>
-            <li><a href="#">Tren</a></li>
-            <li><a href="/menu-usuario">Usuarios</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="sidenav">
+          <li><a href="#">Menú Principal</a></li>
+          <li><a href="#">Wheels</a></li>
+          <li><a href="#">Buses</a></li>
+          <li><a href="#">Tren</a></li>
+          <li><a href="#">Usuario</a></li>
+      </ul>
+    <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
-</nav>
+  </nav>
 
-<section>
+  <section>
     <div class="section container scrollspy" id="contact">
-        <div class="row">
-            <form class="col s12" action="#" th:action="@{/bus}" method="post">
-                <div>
-                    <br>
-                    <h1 class="header center">Crear un Nuevo Bus</h1>
+      <div class="row">
+        <form class="col s12" action="#" method="post">
+          <div>
+            <br>
+            <h1 class="header center">Crear Nueva Bus</h1>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <h6>Placa del Bus</h>
+              <input id="PlacaBus" type="text" value="" class="validate">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <h6>Marca del Bus</h>
+              <input id="MarcaBus" type="text" value="" class="validate">
+            </div>
+          </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <h6>Cupos del Bus</h>
+                <input id="CuposBus" type="text" value="" class="validate">
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <h6>Ruta que recorrera el Bus</h>
+                <input id="RutaBus" type="text" value="" class="validate">
+              </div>
+            </div> 
+            <div class="row">
+              <div class="input-field col s12">
+                <h6>Nombre del Conductor del Bus</h>
+                <input id="NombreConductor" type="text" value="" class="validate">
+              </div>
+            </div>       
+          <div class="row">
+              <div class="row">
+                <div class="input-field col s13 ">
+                  <input type="submit" value="Crear" class="btn light-dark green ">
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <h6>Placa del Bus</h6>
-                        <input id="PlacaBus" type="text" value="" th:field="*{nuevoBus.placa}" class="validate">
-                    </div>
+                <div class="input-field col s13">
+                  <a class="btn grey" id="cancelar" onclick="window.history.back();">Cancelar</a>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <h6>Cupos del Bus</h6>
-                        <input id="CuposBus" type="number" value="" th:field="*{nuevoBus.capacidad}" class="validate">
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <h6>Marca del Bus</h6>
-                            <input id="MarcaBus" type="text" value="" th:field="*{nuevoBus.marca}" class="validate">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <h6>Nombre del Conductor del Bus</h6>
-                        <select id="conductorExistente" name="conductor" th:field="*{nuevoBus.driver}">
-                            <option value="" disabled selected>Elija una opción</option>
-                            <option th:each="drivers : ${driversExistentes}"
-                                    th:value="${drivers.getDriverId()}"
-                                    th:text="${drivers.name}"></option>
-                        </select>
-                        <label>Seleccione el Conductor</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <h6>Ruta que recorrera el Bus</h6>
-                        <select id="rutaExistente" name="ruta" th:field="*{nuevoBus.route}">
-                            <option value="" disabled selected>Elija una opción</option>
-                            <option th:each="ruta : ${routes}"
-                                    th:value="${ruta}"
-                                    th:text="${ruta}"></option>
-                        </select>
-                        <label>Seleccione la Ruta</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="row">
-                        <div class="input-field col s13 ">
-                            <input type="submit" value="Crear" class="btn light-dark green ">
-                        </div>
-                        <div class="input-field col s13">
-                            <a class="btn grey" id="cancelar" onclick="window.history.back();">Cancelar</a>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+              </div>
+          </div>
+        </form>
+      </div>
     </div>
-</section>
-
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" th:src="@{/js/materialize.js}"></script>
-<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/init.js}"></script>
-
-<script>
-    $(document).ready(function () {
-        $('select').formSelect();
-    });
-</script>
-
+  </section>
+  
 </body>
 </html>
