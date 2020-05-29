@@ -43,27 +43,6 @@ public class PruebasIntegracionySistema {
 
 
     /**
-     * Acceder al sistema
-     */
-    /*
-    @Test
-    public void ingresaralSistema() {
-
-        try {
-            Proxy proxy = Proxy.getInstance();
-
-            BigInteger primo = proxy.accederSistema("juangarru@unisabana.edu.co", "123456789", "20.4.3.1");
-
-            assertNotEquals(BigInteger.ZERO, primo);
-
-        } catch (Exception e) {
-            fail("correo electrónico y/o  claves erroneas");
-        }
-
-    }
-    */
-
-    /**
      * Composite agregar una localidad
      */
     @Test
