@@ -62,6 +62,7 @@ public class ClientTests {
      * @throws Exception
      */
     @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void addZonetoZonePadre() throws Exception {
         String zonaid = String.valueOf(zonaRepository.findByNombreLugar("Bogotá").getZonaId());
         mockMvc.perform(post("/localidad")
