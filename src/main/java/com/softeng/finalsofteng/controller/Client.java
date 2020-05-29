@@ -5,7 +5,6 @@ import com.softeng.finalsofteng.repository.IBusRepository;
 import com.softeng.finalsofteng.repository.IDriverRepository;
 import com.softeng.finalsofteng.repository.IUserRepository;
 import com.softeng.finalsofteng.repository.IZonaRepository;
-import com.softeng.finalsofteng.service.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -188,9 +187,8 @@ public class Client {
     @PostMapping("/bus")
     public String saveBus(@ModelAttribute("nuevoBus") Bus nuevoBus) {
         this.proxy.crearBus(nuevoBus);
-
         return "redirect:/menu-bus";
-
     }
+
 }
 

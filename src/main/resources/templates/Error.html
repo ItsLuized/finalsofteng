@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>Menú Principal</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+</head>
+<body>
+<nav class="green darken-2" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href="/">Menú Principal</a></li>
+            <li><a href="#">Wheels</a></li>
+            <li><a href="/menu-bus">Buses</a></li>
+            <li><a href="#">Tren</a></li>
+            <li><a href="/menu-usuario">Usuarios</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+
+        <ul id="nav-mobile" class="sidenav">
+            <li><a href="/">Menú Principal</a></li>
+            <li><a href="#">Wheels</a></li>
+            <li><a href="/menu-bus">Buses</a></li>
+            <li><a href="#">Tren</a></li>
+            <li><a href="/menu-usuario">Usuarios</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+<div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+        <br><br>
+        <h1 class="header center">Error</h1>
+        <div class="row center">
+            <h5 class="header col s12 light">Usted no esta autorizado a entrar a esta pagina.</h5>
+        </div>
+
+        <br><br>
+
+    </div>
+</div>
+
+
+<footer class="page-footer dark green" style="position:fixed;bottom:0;left:0;width:100%;">
+    <div class="container">
+        <div class="row">
+            <div class="col s10 m4">
+            </div>
+            <div class="col l6 s12">
+                <h5 class="white-text">Company Bio</h5>
+                <p class="grey-text text-lighten-4">El Equipo de PROmet esta dispuesto a brindarte el mejor
+                    servicio.</p>
+            </div>
+        </div>
+        <div class=" center footer-copyright">
+            <div class="container">
+                © 2020 Copyright <a class="white-text text-lighten-3" href="http://materializecss.com">PROmet</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="js/materialize.js"></script>
+<script src="js/init.js"></script>
+
+</body>
+</html>
