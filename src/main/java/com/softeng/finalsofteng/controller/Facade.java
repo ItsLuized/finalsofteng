@@ -6,20 +6,14 @@ import com.softeng.finalsofteng.repository.IZonaRepository;
 import com.softeng.finalsofteng.repository.IBusRepository;
 import com.softeng.finalsofteng.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class Facade implements ILogin {
     private static Facade instance = null;
-    //private final Map<String, User> users; // Map consisting of ip and user
-    //private Map<BigInteger, String> ipNonce;
-    private Encryption encryption;
     private final ArrayList<Bus> buses;
     @Autowired
     private IUserRepository userRepository;
@@ -32,8 +26,6 @@ public class Facade implements ILogin {
 
 
     private Facade() {
-        //this.users = new HashMap<>();
-        //this.ipNonce = new HashMap<>();
         this.buses = new ArrayList<>();
     }
 
@@ -44,34 +36,8 @@ public class Facade implements ILogin {
         return instance;
     }
 
-    public void registrarSesion(String ip, User user) {
-        //this.users.put(ip, user);
-    }
-
-    public void crearBus(String placa, int capacidad, String marca, Driver driver, String ruta) {
-        Route route = null;
-        switch (ruta.toLowerCase()){
-            case "septima":
-                route = Route.SEPTIMA;
-                break;
-            case "autonorte":
-                route = Route.AUTONORTE;
-                break;
-            case "boyaca":
-                route = Route.BOYACA;
-                break;
-            case "heroes":
-                route = Route.HEROES;
-                break;
-            case "novena":
-                route = Route.NOVENA;
-                break;
-        }
-
-        ruta = ruta.toUpperCase();
-        Bus bus = new Bus(placa, capacidad, marca, driver, route);
+    public void crearBus(Bus bus) {
         busRepository.save(bus);
-        this.buses.add(bus);
     }
 
     private String verRutas() {
@@ -79,49 +45,11 @@ public class Facade implements ILogin {
         return  buses.toString();
     }
 
-    private String buscarPersonaZona(String nombreLugar) {
-        Zona zona = zonaRepository.findByNombreLugar(nombreLugar);
-        List<User> usersInZone = userRepository.findAllByZona(zona);
-        return usersInZone.toString();
-    }// Lo mismo que listarUsuarios()
-
-
     public void crearContenedor(String nombreLugar, Zona zonaPadre){
         Zona zona = new Zona(nombreLugar);
         zona.setZonaPadre(zonaPadre);
         zonaRepository.save(zona);
     }
-
-    /*private String crearUsuario(String email, String password, String direccion, String documento, String telefono) {
-        String retorna = "Fallo";
-        User usuario = null;
-        Map<String, User> usuarios = Proxy.getInstance().getUsers();
-        for (User user : usuarios.values()) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                usuario = user;
-            }
-        }
-        if (usuario != null) {
-            // Ver en donde se mete el usuario creado...
-            Proxy proxy = Proxy.getInstance();
-            User user = new User(usuario.getEmail(), usuario.getPassword(), direccion, documento, telefono);
-            proxy.remplazarUsuario(usuario, user);
-            retorna = "void";
-        }
-
-        return retorna;
-    }*/
-
-    /*
-    private String crearUsuarioComposite(String documento) {
-        Zona zona = new Zona();
-        String retorno = "Fallo";
-        User usuario = userRepository.findByDocumento(documento);
-        if (usuario != null) retorno = "void";
-        usuario.setZona(zona); // Esto el GarbageCollection lo borra... No hace nada
-        return retorno;
-    }
-    */
 
     private String adicionarUsuarioaComposite(String nombreLugar, String documento){
         String retorno = "fallo";

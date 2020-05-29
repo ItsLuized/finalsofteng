@@ -15,7 +15,6 @@ import java.util.Map;
 public class Proxy implements ILogin {
     private static Proxy instance = null;
     private final Map<String, User> users;
-    //private final Map<String, BigInteger> ipNonce;
     @Autowired
     private Facade facade;
     private final Map<String, Zona> zonas;
@@ -27,7 +26,6 @@ public class Proxy implements ILogin {
 
     private Proxy() {
         this.users = new HashMap();
-        //this.ipNonce = new HashMap<>();
         this.zonas = new HashMap<>();
         this.nonce = new BigInteger("0");
     }
@@ -41,18 +39,6 @@ public class Proxy implements ILogin {
 
     public User registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
         return this.facade.registerUser(email, password, direccion, documento, telefono, zona);
-    }
-
-
-    public BigInteger accederSistema(String email, String password) throws Exception {
-        User user = userRepository.findByEmail(email);
-        if (user == null) throw new SystemRemoteException("User not registered");
-        if (user.getPassword() != password) throw new SystemRemoteException("Invalid credentials");
-
-        this.nonce = BigInteger.probablePrime(2048, new SecureRandom());
-        //this.facade.registrarSesion(ip, user);
-        //this.ipNonce.put(ip, nonce);
-        return nonce;
     }
 
     public Map<String, Zona> getZonas() {
@@ -72,8 +58,8 @@ public class Proxy implements ILogin {
         this.facade.crearContenedor(nombreLugar, zonaPadre);
     }
 
-    public void crearBus(String placa, int capacidad, String marca, Driver driver, String ruta) {
-        this.facade.crearBus(placa, capacidad, marca, driver, ruta);
+    public void crearBus(Bus bus) {
+        this.facade.crearBus(bus);
     }
 
     /*public BigInteger getNonceByIP(String ip){
