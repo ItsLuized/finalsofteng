@@ -1,22 +1,51 @@
 package com.softeng.finalsofteng;
 
-import com.softeng.finalsofteng.controller.Encryption;
-import com.softeng.finalsofteng.controller.Facade;
+import com.softeng.finalsofteng.controller.Client;
 import com.softeng.finalsofteng.controller.Proxy;
+import com.softeng.finalsofteng.model.Role;
+import com.softeng.finalsofteng.model.User;
 import com.softeng.finalsofteng.model.Zona;
-import org.junit.BeforeClass;
+import com.softeng.finalsofteng.repository.IBusRepository;
+import com.softeng.finalsofteng.repository.IUserRepository;
+import com.softeng.finalsofteng.repository.IZonaRepository;
+import com.softeng.finalsofteng.service.IUserService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigInteger;
+import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class PruebasIntegracionySistema {
+
+    @Autowired
+    private IUserRepository userRepository;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private IBusRepository busRepository;
+    @Autowired
+    private IZonaRepository zonaRepository;
+    @Autowired
+    private Proxy proxy;
 
 
     /**
      * Acceder al sistema
      */
+    /*
     @Test
     public void ingresaralSistema() {
 
@@ -32,6 +61,7 @@ public class PruebasIntegracionySistema {
         }
 
     }
+    */
 
     /**
      * Composite agregar una localidad
@@ -40,28 +70,20 @@ public class PruebasIntegracionySistema {
     public void agregarunaLocalidad() {
 
         try {
+            // Before
+            List<Zona> zonas = zonaRepository.findAll();
+            int zonasBeforeInsert = zonas.size();
 
-            Proxy proxy = Proxy.getInstance();
+            // During
+            zonaRepository.save(new Zona("Melgar"));
 
-            BigInteger primo = proxy.accederSistema("juangarru@unisabana.edu.co", "123456789", "20.4.3.1");
+            // After
+            List<Zona> zonasAfter = zonaRepository.findAll();
+            int zonasAfterInsert = zonasAfter.size();
 
-            //Protocolo nombre de método, cantidad de parámetros, tipo, valor,
+            //assertThat(zonasAfterInsert).isEqualTo(zonasBeforeInsert + 1);
+            assertEquals(zonasBeforeInsert + 1, zonasAfterInsert);
 
-            // y tipo de retorno o void si no
-
-            String mensajeAencriptar = "crearContenedor,1,String,Chía,void";
-
-            Encryption aes = Encryption.getInstance(primo.toString());
-
-            String mensajeEncriptado = aes.encrypt(mensajeAencriptar);
-
-
-            Facade facade = Facade.getInstance();
-
-            //String retorno = (String) facade.elaborarOperacion(mensajeEncriptado, "20.4.3.1");
-
-
-            //assertEquals("void", retorno);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,148 +93,47 @@ public class PruebasIntegracionySistema {
     }
 
     /**
-     * Composite crear usuario
+     * Crear usuario
      */
     @Test
     public void crearUsuario() {
-
         try {
+            int usersbeforeInsert = userRepository.findAll().size();
+            Zona zona = zonaRepository.findByNombreLugar("Bogotá");
+            this.proxy.registerUser("testUser1", "1234", "Direccion", "123456789", "3000000000", zona);
+            User newUserSearchedInDB = userRepository.findByEmail("testUser");
+            int usersAfterInsert = userRepository.findAll().size();
 
-            Proxy proxy = Proxy.getInstance();
-
-            BigInteger primo = proxy.accederSistema("juangarru@unisabana.edu.co", "123456789", "20.4.3.1");
-
-
-            //Protocolo nombre de método, cantidad de parámetros, tipo, valor ,
-
-            // y tipo de retorno o void si no
-
-            String mensajeAencriptar = "crearUsuario,5,String,juangarru@unisabana.edu.co,String," +
-
-                    "123456789,String,calle 70 No. 50-14 Casa 1,String,100912921,String,3017641234,void";
-
-            Encryption aes = Encryption.getInstance(primo.toString());
-
-            String mensajeEncriptado = aes.encrypt(mensajeAencriptar);
-
-
-            Facade facade = Facade.getInstance();
-
-            //String retorno = (String) facade.elaborarOperacion(mensajeEncriptado, "20.4.3.1");
-
-
-            //assertEquals("void", retorno);
+            assertEquals(usersbeforeInsert + 1, usersAfterInsert);
 
         } catch (Exception e) {
             e.printStackTrace();
             fail("Registrar usuario ");
         }
-
     }
 
+
     /**
-     * Composite agregar usuario
+     * Comprobar que clave es hasheada antes de insert en BD
      */
     @Test
-    public void agregarUsuario() {
+    public void hashedPassword() {
 
         try {
+            Zona zona = zonaRepository.findByNombreLugar("Bogotá");
+            User newUser = new User("testUser", "1234", "Direccion", "123456789", "3000000000", zona, Role.USER);
+            this.proxy.registerUser(newUser.getEmail(), newUser.getPassword(), newUser.getDireccion(), newUser.getDocumento(), newUser.getTelefono(), newUser.getZona());
+            User newUserSearchedInDB = userRepository.findByEmail("testUser");
 
 
-            Proxy proxy = Proxy.getInstance();
-
-            BigInteger primo = proxy.accederSistema("juangarru@unisabana.edu.co", "123456789", "20.4.3.1");
-
-            // CREAR USUARIO
-            String mensajeAencriptar1 = "crearUsuario,5,String,juangarru@unisabana.edu.co,String,123456789,String,calle 70 No. 50-14 Casa 1,String,100912921,String,3017641234,void";
-
-            Encryption aes1 = Encryption.getInstance(primo.toString());
-
-            String mensajeEncriptado1 = aes1.encrypt(mensajeAencriptar1);
-
-
-            Facade facade1 = Facade.getInstance();
-
-            //facade1.elaborarOperacion(mensajeEncriptado1, "20.4.3.1");
-
-            //Protocolo nombre de método, cantidad de parámetros, tipo, valor ,
-
-            // y tipo de retorno o void si no
-
-            String mensajeAencriptar = "crearUsuarioComposite,1,String,100912921,void";
-
-            Encryption aes = Encryption.getInstance(primo.toString());
-
-            String mensajeEncriptado = aes.encrypt(mensajeAencriptar);
-
-
-            Facade facade = Facade.getInstance();
-
-            //String retorno = (String) facade.elaborarOperacion(mensajeEncriptado, "20.4.3.1");
-
-
-            //assertEquals("void", retorno);
+            assertNotEquals(newUser.getPassword(), newUserSearchedInDB.getPassword());
 
         } catch (Exception e) {
-            fail("Registrar usurio ");
+            fail("Password is the same");
         }
 
     }
 
-    //adicionar usuario a composite
-    /**
-     * Composite agregar usuario
-     */
-    @Test
-    public void agregarUsuarioaCiudad() {
-
-        try {
-
-            Proxy proxy = Proxy.getInstance();
-
-            // Crear el contenedor Chia
-            proxy.crearContenedor("Chia", null);
-            BigInteger primo = proxy.accederSistema("juangarru@unisabana.edu.co", "123456789", "20.4.3.1");
-
-            //CREAR USUARIO
-            String mensajeAencriptar1 = "crearUsuario,5,String,juangarru@unisabana.edu.co,String," +
-
-                    "123456789,String,calle 70 No. 50-14 Casa 1,String,100912921,String,3017641234,void";
-
-            Encryption aes1 = Encryption.getInstance(primo.toString());
-
-            String mensajeEncriptado1 = aes1.encrypt(mensajeAencriptar1);
-
-
-            Facade facade1 = Facade.getInstance();
-
-            //facade1.elaborarOperacion(mensajeEncriptado1, "20.4.3.1");
-
-
-            //Protocolo nombre de método, cantidad de parámetros, tipo, valor ,
-
-            // y tipo de retorno o void si no
-
-            String mensajeAencriptar = "adicionarUsuarioaComposite,2,String,Chia,String,100912921,void";
-
-            Encryption aes = Encryption.getInstance(primo.toString());
-
-            String mensajeEncriptado = aes.encrypt(mensajeAencriptar);
-
-
-            Facade facade = Facade.getInstance();
-
-            //String retorno = (String) facade.elaborarOperacion(mensajeEncriptado, "20.4.3.1");
-
-            //assertEquals("void", retorno);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Registrar usuario ");
-        }
-
-    }
 
     //listar usuarios de ciudad
 
@@ -221,57 +142,20 @@ public class PruebasIntegracionySistema {
      */
     @Test
     public void listarUsuarioaCiudad() {
-
         try {
+            Zona barranquilla = zonaRepository.findByNombreLugar("Barranquilla");
+            if (barranquilla == null) {
+                // si no existe la zona, crearemos un contenedor solo para este usuario
+                barranquilla = zonaRepository.save(new Zona("Barranquilla"));
+            } else userRepository.deleteAllByZona(barranquilla);
 
-            Proxy proxy = Proxy.getInstance();
-
-
-            BigInteger primo = proxy.accederSistema("juangarru@unisabana.edu.co", "123456789", "20.4.3.1");
-
-            //CREAR USUARIO, CONTENEDOR Y METERLO A CONTENEDOR
-            proxy.crearContenedor("Chia", null);
-            //CREAR USUARIO
-            String mensajeAencriptar1 = "crearUsuario,5,String,juangarru@unisabana.edu.co,String,123456789,String,calle 70 No. 50-14 Casa 1,String,100912921,String,3017641234,void";
-
-            Encryption aes1 = Encryption.getInstance(primo.toString());
-
-            String mensajeEncriptado1 = aes1.encrypt(mensajeAencriptar1);
+            // Ahora crear un usuario para que este en la zona
+            proxy.registerUser("usuarioBarranquilla", "pass", "Barranquilla", "1325413", "3200000000", barranquilla);
 
 
-            Facade facade1 = Facade.getInstance();
-
-            //facade1.elaborarOperacion(mensajeEncriptado1, "20.4.3.1");
-
-            //METERLO A CONTENEDOR
-            String mensajeAencriptar2 = "adicionarUsuarioaComposite,2,String,Chia,String,100912921,void";
-
-            Encryption aes2 = Encryption.getInstance(primo.toString());
-
-            String mensajeEncriptado2 = aes2.encrypt(mensajeAencriptar2);
-
-
-            Facade facade2 = Facade.getInstance();
-
-            //facade2.elaborarOperacion(mensajeEncriptado2, "20.4.3.1");
-
-            //Protocolo nombre de método, cantidad de parámetros, tipo, valor ,
-
-            // y tipo de retorno o void si no
-
-            String mensajeAencriptar = "listarUsuarios,1,String,Chia,String";
-
-            Encryption aes = Encryption.getInstance(primo.toString());
-
-            String mensajeEncriptado = aes.encrypt(mensajeAencriptar);
-
-
-            Facade facade = Facade.getInstance();
-
-            //String retorno = (String) facade.elaborarOperacion(mensajeEncriptado, "20.4.3.1");
-            //System.out.println(retorno);
-
-            //assertEquals(retorno, "Chia,juangarru@unisabana.edu.co");
+            List<User> usuarioBarranquilla = userRepository.findAllByZona(barranquilla);
+            User userBarranquilla = usuarioBarranquilla.get(0);
+            assertEquals(userRepository.findByEmail("usuarioBarranquilla"), userBarranquilla);
 
         } catch (Exception e) {
             e.printStackTrace();

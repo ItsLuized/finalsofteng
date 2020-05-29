@@ -16,4 +16,6 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByZona (Zona zona);
 
+    void deleteAllByZona (Zona zona);
+
 }

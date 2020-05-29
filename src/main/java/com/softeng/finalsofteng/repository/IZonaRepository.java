@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface IZonaRepository extends JpaRepository<Zona, Long> {
 
-    Zona findByNombreLugar (String nombreLugar);
+    Zona findByNombreLugar(String nombreLugar);
 
-    List<Zona> findAll ();
+    List<Zona> findAll();
 
 }
