@@ -71,7 +71,6 @@ public class Facade implements ILogin {
 
     @Override
     public User registerUser(String email, String password, String direccion, String documento, String telefono, Zona zona) {
-        zonaRepository.save(zona);
         User user = new User(email, password, direccion, documento, telefono, zona, Role.USER);
         return userService.registerUser(user);
     }

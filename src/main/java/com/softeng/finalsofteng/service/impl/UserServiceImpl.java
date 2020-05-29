@@ -2,7 +2,6 @@ package com.softeng.finalsofteng.service.impl;
 
 import com.softeng.finalsofteng.model.Role;
 import com.softeng.finalsofteng.model.User;
-import com.softeng.finalsofteng.model.Zona;
 import com.softeng.finalsofteng.repository.IUserRepository;
 import com.softeng.finalsofteng.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     @Override
     public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.USER);
         return userRepository.save(user);
     }
 

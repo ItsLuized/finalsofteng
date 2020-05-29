@@ -1,7 +1,6 @@
 package com.softeng.finalsofteng.service;
 
 import com.softeng.finalsofteng.model.User;
-import com.softeng.finalsofteng.model.Zona;
 
 import java.util.List;
 

@@ -66,7 +66,7 @@
                         <select id="conductorExistente" name="conductor" th:field="*{nuevoBus.driver}">
                             <option value="" disabled selected>Elija una opción</option>
                             <option th:each="drivers : ${driversExistentes}"
-                                    th:value="${drivers.getDriverId()}"
+                                    th:value="${drivers}"
                                     th:text="${drivers.name}"></option>
                         </select>
                         <label>Seleccione el Conductor</label>
