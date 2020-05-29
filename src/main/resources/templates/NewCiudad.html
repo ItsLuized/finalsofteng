@@ -1,68 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-      <title>Nueva Ciudad</title>
-      
-        <!-- CSS  -->
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
-      <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>Nueva Ciudad</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
 
 </head>
 
 <body>
-    <nav class="green darken-2" role="navigation">
-      <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
+<nav class="green darken-2" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">PROmet</a>
         <ul class="right hide-on-med-and-down">
-          <li><a href="#">Menú Principal</a></li>
-          <li><a href="#">Wheels</a></li>
-          <li><a href="#">Buses</a></li>
-          <li><a href="#">Tren</a></li>
-          <li><a href="#">Usuario</a></li>
+            <li><a href="/">Menú Principal</a></li>
+            <li><a href="#">Wheels</a></li>
+            <li><a href="/menu-bus">Buses</a></li>
+            <li><a href="#">Tren</a></li>
+            <li><a href="/menu-usuario">Usuarios</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
-            
-        <ul id="nav-mobile" class="sidenav">
-          <li><a href="#">Menú Principal</a></li>
-          <li><a href="#">Wheels</a></li>
-          <li><a href="#">Buses</a></li>
-          <li><a href="#">Tren</a></li>
-          <li><a href="#">Usuario</a></li>
-        </ul>
-        
-        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-      </div>
-    </nav>
 
-  <section>
-    <div class="section container scrollspy" id="contact">
-      <div class="row">
-        <form class="col s12" action="#" method="post">
-          <div>
-            <br>
-            <h1 class="header center">Crear Nueva Ciudad</h1>
-                
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <h6>Nombre de la Ciudad</h>
-              <input id="NombreCiudad" type="text" value="" class="validate">
-            </div>
-          </div>
-          <div class="row">
-            <div class="row">
-              <div class="input-field col s13 ">
-                <input type="submit" value="Crear" class="btn light-dark green ">
-              </div>
-              <div class="input-field col s13">
-                <a class="btn grey" id="cancelar" onclick="window.history.back();">Cancelar</a>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
+        <ul id="nav-mobile" class="sidenav">
+            <li><a href="/">Menú Principal</a></li>
+            <li><a href="#">Wheels</a></li>
+            <li><a href="/menu-bus">Buses</a></li>
+            <li><a href="#">Tren</a></li>
+            <li><a href="/menu-usuario">Usuarios</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
-  </section>    
+</nav>
+
+<section>
+    <div class="section container scrollspy" id="contact">
+        <div class="row">
+            <form class="col s12" action="#" th:action="@{/ciudad}" th:object="${zonaCiudad}" method="post">
+                <div>
+                    <br>
+                    <h1 class="header center">Crear Nueva Ciudad</h1>
+
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <h6>Nombre de la Ciudad</h6>
+                        <input id="NombreCiudad" type="text" value="" th:field="*{nombreLugar}" class="validate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <div class="input-field col s13 ">
+                            <input type="submit" value="Crear" class="btn light-dark green ">
+                        </div>
+                        <div class="input-field col s13">
+                            <a class="btn grey" id="cancelar" onclick="window.history.back();">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
 </body>
 </html>
