@@ -1,6 +1,8 @@
 package com.softeng.finalsofteng;
 
+import com.softeng.finalsofteng.model.Zona;
 import com.softeng.finalsofteng.repository.IZonaRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,43 +24,19 @@ public class ClientTests {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private IZonaRepository zonaRepository;
 
-    /**
-     * Verifies if the url the user is redirected to, when entering correct credentials, is '/' (the main menu)
-     *
-     * @throws Exception
-     */
-    @Test
-    public void login() throws Exception {
-        mockMvc.perform(post("/login")
-                .param("username", "luismacr")
-                .param("password", "luis"))
-                // Si el login es exitoso, envia al menu principal que tiene la url '/'
-                .andExpect(redirectedUrl("/"));
-    }
-
-    /**
-     * Verifies that when the user enters bad credentials, he is redirected to the same '/longin' but with a error
-     *
-     * @throws Exception
-     */
-    @Test
-    public void errorLogin() throws Exception {
-        mockMvc.perform(post("/login")
-                .param("username", "luismacr")
-                // Le mandamos una mala contraseña
-                .param("password", "badpassword"))
-                // Si las credenciales son incorrectas, me manda un al mismo login pero con un error
-                .andExpect(redirectedUrl("/login?error"));
+    @Before
+    public void Setup() {
+        zonaRepository.deleteAll();
+        zonaRepository.save(new Zona("Bogotá"));
     }
 
     /**
      * Adds a localidad to a City
      *
-     * @throws Exception
+     * @throws Exception If test fails
      */
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
@@ -72,7 +49,7 @@ public class ClientTests {
     }
 
     /**
-     * @throws Exception
+     * @throws Exception If test fails
      */
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
@@ -80,5 +57,20 @@ public class ClientTests {
         mockMvc.perform(get("/listausuarios"))
                 .andExpect(content().string(containsString("Listar Usuarios por Zona")));
     }
+
+    // Have to Make it work
+    /*@Test
+    public void RegisterUserAndExpectCreatedResponse() throws Exception {
+        String zonaid = String.valueOf(zonaRepository.findByNombreLugar("Bogotá").getZonaId());
+        System.out.println(zonaid);
+        mockMvc.perform(post("/register")
+                .param("newUser.email", "correo.prueba@correo.com")
+                .param("newUser.password", "Contrasena")
+                .param("newUser.direccion", "direccionPrueba")
+                .param("newUser.documento", "6151312")
+                .param("newUser.telefono", "651651321681")
+                .param("newUser.zona", zonaid)).andExpect(status().isCreated());
+
+    }*/
 
 }

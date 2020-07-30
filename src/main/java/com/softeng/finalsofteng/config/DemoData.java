@@ -4,7 +4,6 @@ import com.softeng.finalsofteng.controller.Facade;
 import com.softeng.finalsofteng.model.*;
 import com.softeng.finalsofteng.repository.IBusRepository;
 import com.softeng.finalsofteng.repository.IDriverRepository;
-import com.softeng.finalsofteng.repository.IUserRepository;
 import com.softeng.finalsofteng.repository.IZonaRepository;
 import com.softeng.finalsofteng.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class DemoData {
 
     @Autowired
@@ -66,6 +65,11 @@ public class DemoData {
         userService.registerUser(new User("patricio62", "pass", "100- #73-23", "12065298", "3124568300", suba, Role.USER));
         userService.registerUser(new User("maria12", "pass", "130- #7", "10015298", "3104568520", usaquen, Role.USER));
 
+    }
 
+    void crearContenedor(String nombreLugar, Zona zonaPadre) {
+        Zona zona = new Zona(nombreLugar);
+        zona.setZonaPadre(zonaPadre);
+        zonaRepository.save(zona);
     }
 }

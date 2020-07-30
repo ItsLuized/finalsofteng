@@ -30,7 +30,7 @@ public class Bus {
     @Enumerated(EnumType.STRING)
     private Route route;
 
-    public Bus(String placa, int capacidad, String marca, Driver driver, Route route){
+    public Bus(String placa, int capacidad, String marca, Driver driver, Route route) {
         this.placa = placa;
         this.capacidad = capacidad;
         this.marca = marca;
